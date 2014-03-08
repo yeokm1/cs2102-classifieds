@@ -1,5 +1,20 @@
 <?php
 	include('header.php');
+
+  if (isset($_POST['username'])){
+    if ($stmt = $conn->prepare("SELECT * FROM user WHERE username = ? AND password = ?")) {
+      $stmt->bind_param('ss', $_POST['username'], $_POST['password']);
+      $stmt->execute();
+      $res = $stmt->get_result();
+      
+      if ($res -> num_rows > 0) {
+        $_SESSION['username'] = $_POST['username'];
+        $msg = 'You have logged in!';
+      }else{
+        $msg = 'Invalid username or password';
+      }
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,10 +47,16 @@
 
     <div class="container">
 
-      <form class="form-signin" role="form">
+      <?php
+        if (isset ($msg)){
+          echo $msg;
+        }
+      ?>
+
+      <form class="form-signin" role="form" method="post" action="signin.php">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="username" class="form-control" placeholder="Username" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
+        <input type="username" name="username" class="form-control" placeholder="Username" required autofocus>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
 
