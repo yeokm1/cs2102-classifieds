@@ -9,6 +9,9 @@
       
       if ($res -> num_rows > 0) {
         $_SESSION['username'] = $_POST['username'];
+
+        $row = $res->fetch_assoc();
+        $_SESSION['role'] = $row['role'];
         $msg = 'You have logged in!';
       }else{
         $msg = 'Invalid username or password';
@@ -55,8 +58,8 @@
 
       <form class="form-signin" role="form" method="post" action="signin.php">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="username" name="username" class="form-control" placeholder="Username" required autofocus>
-        <input type="password" name="password" class="form-control" placeholder="Password" required>
+        <input type="username" name="username" class="form-control form-first-item" placeholder="Username" required autofocus>
+        <input type="password" name="password" class="form-control form-last-item" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
 
