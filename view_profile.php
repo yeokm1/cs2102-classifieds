@@ -1,22 +1,22 @@
 <?php
 	include('header.php');
 
-	if (isset($_GET['id'])){
-		//echo $_GET['id'];
-		if ($stmt = $conn->prepare("SELECT * FROM item WHERE id = ?")) {
-			$stmt->bind_param('i', $_GET['id']);
+	if (isset($_GET['username'])){
+		//echo $_GET['username'];
+		if ($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
+			$stmt->bind_param('s', $_GET['username']);
 			$stmt->execute();
 			$res = $stmt->get_result();
-			$item = $res->fetch_assoc();
+			$user = $res->fetch_assoc();
 			if ($res -> num_rows == 0) {
-				$error = 'Invalid item';
+				$error = 'Invalid User: ';
 			}
 		}
 		
 	}
 	else{
-		$_GET['id']="Missing ID";
-		$error = 'Invalid item';
+		$_GET['username']="Missing username";
+		$error = 'Invalid User: ';
 	}
 
 
@@ -52,15 +52,15 @@
 
   <body>
 
-     <?php include('navigation.html'); ?>
-
+	<?php include('navigation.html'); ?>
+   
     <div class="container-fluid">
       
 	<?php
         if (isset ($error)){
     ?>
 		<div class="container-fluid ">
-        <h1>Invalid item:  <?php echo $_GET['id'] ?></h1>
+        <h1>Invalid username:  <?php echo $_GET['username'] ?></h1>
       </div>
 	<?php
 	    }
@@ -69,23 +69,15 @@
 	  
 	  
       <div class="container-fluid ">
-        <h1>Viewing Item ID:  <?php echo $item['id'] ?></h1>
+        <h1>Viewing Item ID:  <?php echo $user['username'] ?></h1>
       </div>
 
       <div class="container-fluid ">
         <ul>
-		<li><h2 class="form-signin-heading">Title</h2>
-        <?php echo $item['title'] ?>
-        <li><h2 class="form-signin-heading">Summary</h2>
-        <?php echo $item['summary'] ?>
-        <li><h2 class="form-signin-heading">Description</h2>
-        <?php echo $item['description'] ?>
-        <li><h2 class="form-signin-heading">Condition</h2>
-        <?php echo $item['cond'] ?>
-        <li><h2 class="form-signin-heading">Price</h2>
-        <?php echo $item['price'] ?>
-		<li><h2 class="form-signin-heading">Date</h2>
-        <?php echo $item['date_listed'] ?>
+		<li><h2 class="form-signin-heading">Gender</h2>
+        <?php echo $user['gender'] ?>
+        <li><h2 class="form-signin-heading">Contact No</h2>
+        <?php echo $user['phone'] ?>
 		</ul>
       </div>
 
