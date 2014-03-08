@@ -69,8 +69,10 @@ class ModelAdmin {
 			//$row = $result->fetch_assoc();
 			$stmt->close();
 		}
+
+		$row=$result->fetch_assoc();
 		
-		return $result;
+		return $row['COUNT(*)'];
 	}
 	
 	public function getNumItems() {
@@ -81,8 +83,10 @@ class ModelAdmin {
 			//$row = $result->fetch_assoc();
 			$stmt->close();
 		}
+
+		$row=$result->fetch_assoc();
 		
-		return $result;
+		return $row['COUNT(*)'];
 	}
 	
 	public function getNumCat() {
@@ -93,8 +97,10 @@ class ModelAdmin {
 			//$row = $result->fetch_assoc();
 			$stmt->close();
 		}
+
+		$row=$result->fetch_assoc();
 		
-		return $result;
+		return $row['COUNT(*)'];
 	}
 
 }
