@@ -20,6 +20,26 @@ SET time_zone = "+08:00";
 -- Database: `classifieds`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `email` varchar(256) NOT NULL,
+  `username` varchar(32) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `photo` varchar(32) DEFAULT NULL,
+  `gender` varchar(16) NOT NULL,
+  `phone` varchar(32) NOT NULL,
+  `join_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `role` varchar(16) NOT NULL DEFAULT 'user',
+  PRIMARY KEY (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 
 --
@@ -48,7 +68,8 @@ CREATE TABLE IF NOT EXISTS `item` (
   `price` double NOT NULL,
   `date_listed` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `user` (`user`)
+  KEY `user` (`user`),
+  FOREIGN KEY (`user`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -61,44 +82,13 @@ CREATE TABLE IF NOT EXISTS `tagged` (
   `item_id` int(11) NOT NULL,
   `cat_name` varchar(32) NOT NULL,
   PRIMARY KEY (`item_id`,`cat_name`),
-  KEY `cat_name` (`cat_name`)
+  KEY `cat_name` (`cat_name`),
+  FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`),
+  FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `user`
---
 
-CREATE TABLE IF NOT EXISTS `user` (
-  `email` varchar(256) NOT NULL,
-  `username` varchar(32) NOT NULL,
-  `password` varchar(32) NOT NULL,
-  `photo` varchar(32) DEFAULT NULL,
-  `gender` varchar(16) NOT NULL,
-  `phone` varchar(32) NOT NULL,
-  `join_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `role` varchar(16) NOT NULL DEFAULT 'user',
-  PRIMARY KEY (`username`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `item`
---
-ALTER TABLE `item`
-  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `tagged`
---
-ALTER TABLE `tagged`
-  ADD CONSTRAINT `tagged_ibfk_2` FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`),
-  ADD CONSTRAINT `tagged_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
