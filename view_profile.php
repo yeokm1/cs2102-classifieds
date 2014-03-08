@@ -31,7 +31,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>CS2102 I</title>
+    <title>Viewing profile: <?php echo $_GET['username'] ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 	  
       <div class="container-fluid ">
         <h1>Viewing User:  <?php echo $user['username'] ?></h1>
-      </div>
+ 
 
 	   <?php 
 			if(isset($_SESSION['username']) && $user['username']==$_SESSION['username']){
@@ -83,6 +83,7 @@
 		<?php
 			}
 		 ?>
+		 </div>
 		 
       <div class="container-fluid ">
         <ul>

@@ -1,21 +1,20 @@
 <?php
 	include('header.php');
 
-	if (isset($_GET['id'])){
+	if (isset($_SESSION['username'])){
 		//echo $_GET['id'];
-		if ($stmt = $conn->prepare("SELECT * FROM item WHERE id = ?")) {
-			$stmt->bind_param('i', $_GET['id']);
+		if ($stmt = $conn->prepare("SELECT * FROM item WHERE user = ?")) {
+			$stmt->bind_param('s', $_SESSION['username']);
 			$stmt->execute();
 			$res = $stmt->get_result();
 			$item = $res->fetch_assoc();
 			if ($res -> num_rows == 0) {
-				$error = 'Invalid item';
+				$error = 'NoItemPosted';
 				}
 			}
 		}
 	else{
-		$_GET['id']="Missing ID";
-		$error = 'Invalid item';
+		$error = 'NotLoggedIn';
 		}
 ?>
 <!DOCTYPE html>
@@ -27,7 +26,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-        <title>Viewing item: <?php echo $item['title'] ?></title>
+    <title>View your list of items</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -46,67 +45,59 @@
   </head>
 
   <body>
-
-     <?php include('navigation.html'); ?>
+	<div class="container-fluid ">
+	<h1>Your posted items</h1></div>
+	<?php include('navigation.html'); ?>
 
     <div class="container-fluid">
       
 	<?php
-        if (isset ($error)){
+        if (isset($error) && $error == "NoItemPosted"){
     ?>
 		<div class="container-fluid ">
-        <h1>Invalid item:  <?php echo $_GET['id'] ?></h1>
-      </div>
+			<p>You have no items posted yet!
+			<p>Click <a href="add_modify_item.php">here</a> to create your first one!
+		
+		</div>
+	<?php
+	    }
+		else if(isset($error) && $error == "NotLoggedIn"){
+     ?>
+		<div class="container-fluid ">
+			<p>Error! You are not logged in!
+			<p>Click <a href="signin.php">here</a> to login!
+		</div>
 	<?php
 	    }
 		else{
      ?>
 	  
-	  
-      <div class="container-fluid ">
-        <h1>Viewing Item ID:  <?php echo $item['id'] ?></h1>
-     
-
-	  <?php 
-			if(isset($_SESSION['username']) && $item['user']==$_SESSION['username']){
-			
-		?>
-			<FORM action="add_modify_item.php">
-				<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-				<INPUT type=submit value="Edit your posted item" class="btn btn-primary pull-center">
-			</FORM>
-		<br>
-		<?php
-			}
-		 ?>
-		 </div>
 		 
       <div class="container-fluid ">
-        <ul>
-		<li><h2 class="form-signin-heading">Posted by:</h2>
-     
 		
+		<?php
+	    
+		while($item=$res ->fetch_assoc()){
 		
-		<a href="view_profile.php?username=<?php echo $item['user'] ?>">
-		<?php echo $item['user'] ?>
-		</a>
+		?>
+		<li><h2><?php echo $item['title'] ?></h2>
+			<FORM action="add_modify_item.php">
+				<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+				<INPUT type=submit value="Edit" class="btn btn-primary pull-center">
+			</FORM>
+			<p>
+			<ul>
+			<li><b>ID:</b> <?php echo $item['id'] ?>
+			<li><b>Summary:</b> <?php echo $item['summary'] ?>
+			<li><b>Date Listed:</b> <?php echo $item['date_listed'] ?>
+
+			</ul>
+			<hr />
 		
+		<?php
+		}	
+		?>
 		
-		
-		
-		
-		<li><h2 class="form-signin-heading">Title</h2>
-        <?php echo $item['title'] ?>
-        <li><h2 class="form-signin-heading">Summary</h2>
-        <?php echo $item['summary'] ?>
-        <li><h2 class="form-signin-heading">Description</h2>
-        <?php echo $item['description'] ?>
-        <li><h2 class="form-signin-heading">Condition</h2>
-        <?php echo $item['cond'] ?>
-        <li><h2 class="form-signin-heading">Price</h2>
-        <?php echo $item['price'] ?>
-		<li><h2 class="form-signin-heading">Date</h2>
-        <?php echo $item['date_listed'] ?>
 		</ul>
       </div>
 
