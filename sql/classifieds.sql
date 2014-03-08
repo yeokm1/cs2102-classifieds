@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2014 at 04:20 AM
+-- Generation Time: Mar 08, 2014 at 06:15 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 CREATE TABLE IF NOT EXISTS `item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(32) NOT NULL,
   `title` text NOT NULL,
   `summary` text NOT NULL,
   `description` text NOT NULL,
@@ -46,19 +47,21 @@ CREATE TABLE IF NOT EXISTS `item` (
   `cond` varchar(64) NOT NULL,
   `price` double NOT NULL,
   `date_listed` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `posts`
+-- Table structure for table `tagged`
 --
 
-CREATE TABLE IF NOT EXISTS `posts` (
-  `user` varchar(32) NOT NULL references user(username) on delete cascade,
-  `item` int(11) NOT NULL references item(id) on delete cascade,
-  primary key (user,item)
+CREATE TABLE IF NOT EXISTS `tagged` (
+  `item_id` int(11) NOT NULL,
+  `cat_name` varchar(32) NOT NULL,
+  PRIMARY KEY (`item_id`,`cat_name`),
+  KEY `cat_name` (`cat_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -80,18 +83,22 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `tagged`
+-- Constraints for dumped tables
 --
 
-CREATE TABLE IF NOT EXISTS `tagged` (
-  `item_id` int NOT NULL references item(id) on delete cascade,
-  `cat_name` varchar(32) NOT NULL references category(name) on delete cascade on update cascade,
-  primary key (item_id,cat_name)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Constraints for table `item`
+--
+ALTER TABLE `item`
+  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+--
+-- Constraints for table `tagged`
+--
+ALTER TABLE `tagged`
+  ADD CONSTRAINT `tagged_ibfk_2` FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`),
+  ADD CONSTRAINT `tagged_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
