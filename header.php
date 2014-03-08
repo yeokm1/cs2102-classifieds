@@ -1,4 +1,6 @@
 <?php
+
+	session_start();
 	
 	$conn = mysqli_connect("localhost", "root", "", "classifieds");
 	if (mysqli_connect_errno($conn)) {
