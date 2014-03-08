@@ -19,8 +19,7 @@
 		$error = 'Invalid User: ';
 	}
 
-
-    
+  
 		
 ?>
 <!DOCTYPE html>
@@ -77,8 +76,7 @@
 			if(isset($_SESSION['username']) && $user['username']==$_SESSION['username']){
 			
 		?>
-			<FORM action="add_modify_user.php">
-				<input type="hidden" name="username" value="<?php echo $user['username'] ?>">
+			<FORM action="account.php">
 				<INPUT type=submit value="Edit your own profile" class="btn btn-primary pull-center">
 			</FORM>
 		<br>
