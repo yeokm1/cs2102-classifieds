@@ -1,5 +1,23 @@
 <?php
 	include('header.php');
+
+  echo "test1";
+
+  if (isset($_POST['username'])){
+    echo "test2";
+
+    if ($_POST['password'] != $_POST['retype-password']){
+      echo "test3";
+      $err = 'Passwords do not match';
+    }else{
+      echo "test4";
+      if ($stmt = $conn->prepare("INSERT INTO user (email, username, password, phone) VALUES (?, ?, ?, ?)")) {
+        $stmt->bind_param('ssss', $_POST['email'], $_POST['username'], $_POST['password'], $_POST['contact-number']);
+        $stmt->execute();
+      }
+    }
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,14 +50,20 @@
 
     <div class="container">
 
-      <form class="form-signin" role="form">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="username" class="form-control" placeholder="Username" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
-		<input type="retype-password" class="form-control" placeholder="Retype Password" required>
-		<input type="email" class="form-control" placeholder="Email Address" required>
-		<input type="contact-number" class="form-control" placeholder="Contact Number" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <?php
+        if (isset($err)){
+          echo $err;
+        }
+      ?>
+
+      <form class="form-signin" role="form" action="account.php" method="post">
+        <h2 class="form-signin-heading">Create account</h2>
+        <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+		<input type="password" name="retype-password" class="form-control" placeholder="Retype Password" required>
+		<input type="email" name="email" class="form-control" placeholder="Email Address" required>
+		<input type="text" name="contact-number" class="form-control" placeholder="Contact Number" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
       </form>
 
     </div> <!-- /container -->
