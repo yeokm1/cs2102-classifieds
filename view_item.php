@@ -10,18 +10,13 @@
 			$item = $res->fetch_assoc();
 			if ($res -> num_rows == 0) {
 				$error = 'Invalid item';
+				}
 			}
 		}
-		
-	}
 	else{
 		$_GET['id']="Missing ID";
 		$error = 'Invalid item';
-	}
-
-
-    
-		
+		}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,8 +67,33 @@
         <h1>Viewing Item ID:  <?php echo $item['id'] ?></h1>
       </div>
 
+	  <?php 
+			if(isset($_SESSION['username']) && $item['user']==$_SESSION['username']){
+			
+		?>
+			<FORM action="add_modify_item.php">
+				<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+				<INPUT type=submit value="Edit your posted item" class="btn btn-primary pull-center">
+			</FORM>
+		<br>
+		<?php
+			}
+		 ?>
+		 
       <div class="container-fluid ">
         <ul>
+		<li><h2 class="form-signin-heading">Posted by:</h2>
+     
+		
+		
+		<a href="view_profile.php?username=<?php echo $item['user'] ?>">
+		<?php echo $item['user'] ?>
+		</a>
+		
+		
+		
+		
+		
 		<li><h2 class="form-signin-heading">Title</h2>
         <?php echo $item['title'] ?>
         <li><h2 class="form-signin-heading">Summary</h2>
@@ -89,11 +109,13 @@
 		</ul>
       </div>
 
-    </div>
+
 	
 	<?php
-       }
+ 		}
      ?>
+	 
+	 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

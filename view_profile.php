@@ -67,11 +67,25 @@
 		else{
      ?>
 	  
+	  	 
 	  
       <div class="container-fluid ">
-        <h1>Viewing Item ID:  <?php echo $user['username'] ?></h1>
+        <h1>Viewing User:  <?php echo $user['username'] ?></h1>
       </div>
 
+	   <?php 
+			if(isset($_SESSION['username']) && $user['username']==$_SESSION['username']){
+			
+		?>
+			<FORM action="add_modify_user.php">
+				<input type="hidden" name="username" value="<?php echo $user['username'] ?>">
+				<INPUT type=submit value="Edit your own profile" class="btn btn-primary pull-center">
+			</FORM>
+		<br>
+		<?php
+			}
+		 ?>
+		 
       <div class="container-fluid ">
         <ul>
 		<li><h2 class="form-signin-heading">Gender</h2>
