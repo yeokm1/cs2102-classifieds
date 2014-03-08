@@ -1,9 +1,15 @@
+<?php
+        
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -59,18 +65,19 @@
       </div>
 
       <div class="row">
-        <form class="form-signin" role="form">
+           <form class="form-signin" role="form" action="add_modify_item.php" method="post">
         <h2 class="form-signin-heading">Title</h2>
-        <input type="title" class="form-control" placeholder="Title" required autofocus>
+        <input type="title" class="form-control" placeholder="Title" required autofocus id = "title">
                 <h2 class="form-signin-heading">Summary</h2>
-        <input type="summary" class="form-control" placeholder="Summary" required >
+        <input type="summary" class="form-control" placeholder="Summary"  required id = "summ">
                 <h2 class="form-signin-heading">Description</h2>
-        <input type="description" class="form-control" placeholder="Description" required >
+        <input type="description" class="form-control" placeholder="Description"  required id = "desc">
                 <h2 class="form-signin-heading">Condition</h2>
-        <input type="condition" class="form-control" placeholder="Item Condition" required >
+        <input type="condition" class="form-control" placeholder="Item Condition" required  id = "cond">
                 <h2 class="form-signin-heading">Price</h2>
-        <input type="price" class="form-control" placeholder="Price" required >
-        <button class="btn btn-lg btn-primary btn-block" type="submit_post">Post</button>
+        <input type="price" class="form-control" placeholder="Price" required id = "price">
+        <br></br>
+        <button class="btn btn-primary pull-left" type="button" id="post_btn">Post</button>
       </form>
       </div>
 
@@ -80,7 +87,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
+
+
   </body>
+
+
 </html>
