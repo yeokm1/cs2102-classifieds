@@ -1,5 +1,27 @@
 <?php
-        
+       include('header.php');
+
+       //if the fields are populated
+       if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['description']) && isset($_POST['condition']) && isset($_POST['price']) ){
+
+
+        if($_POST['condition'] == "invalid"){
+
+        $message = "Please set the condition of the item";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+        }
+
+      else if ($stmt = $conn->prepare("INSERT INTO item (user, title, summary, description, cond, price) VALUES (?, ?, ?, ?, ?, ?)")) {
+     
+        $stmt->bind_param('sssssd', $_SESSION["username"], $_POST['title'], $_POST['summary'], $_POST['description'], $_POST['condition'], $_POST['price']);
+        $stmt->execute();
+        echo $conn->error;
+        $message = "Your entry has been posted";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+      }
+
+
+       } 
 ?>
 
 <!DOCTYPE html>
@@ -67,17 +89,34 @@
       <div class="row">
            <form class="form-signin" role="form" action="add_modify_item.php" method="post">
         <h2 class="form-signin-heading">Title</h2>
-        <input type="title" class="form-control" placeholder="Title" required autofocus id = "title">
+        <input type="text" name = "title" class="form-control" placeholder="Title" required autofocus >
                 <h2 class="form-signin-heading">Summary</h2>
-        <input type="summary" class="form-control" placeholder="Summary"  required id = "summ">
+        <input type="text" name = "summary" class="form-control" placeholder="Summary"  required >
                 <h2 class="form-signin-heading">Description</h2>
-        <input type="description" class="form-control" placeholder="Description"  required id = "desc">
+        <input type="text" name = "description" class="form-control" placeholder="Description"  required>
+<!--        
                 <h2 class="form-signin-heading">Condition</h2>
-        <input type="condition" class="form-control" placeholder="Item Condition" required  id = "cond">
+        <input type="text" name = "condition" class="form-control" placeholder="Condition of item" required >
+-->
+                  <div class="control-group">
+                      <label class="control-label" for="inputModuleCode">Condition of Item</label>
+                      <div class="controls">
+                        <select id="inputModuleCode" name = "condition">
+                          <option id="option" value = "invalid">Select item</option>
+                          <option id="option1" value = "Brand new">Brand new</option>
+                          <option id="option2" value = "Excellent">Excellent</option>
+                          <option id="option3" value = "Good">Good</option>
+                          <option id="option4" value = "Decent">Decent</option>
+                          <option id="option5" value = "Slightly Screwed">Slightly screwed</option>
+                          <option id="option6" value = "Screwed">Screwed</option>
+                        </select>                   
+                      </div>
+                    </div>
+
                 <h2 class="form-signin-heading">Price</h2>
-        <input type="price" class="form-control" placeholder="Price" required id = "price">
+        <input type="text" name = "price" class="form-control" placeholder="Price" required >
         <br></br>
-        <button class="btn btn-primary pull-left" type="button" id="post_btn">Post</button>
+        <input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" value = "Post"/>
       </form>
       </div>
 
