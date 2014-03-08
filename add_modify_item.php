@@ -53,25 +53,28 @@
     </div>
 
     <div class="container-fluid">
+      
       <div class="row">
-        <div>
-          <h1 class="page-header">
-            <?php          
-          
-              if (isset($_GET['my'])){
-                $mode = 'myStuff';
-                echo 'My Classifieds';
-              }elseif (isset($_GET['new'])){
-                $mode = 'postNew';
-                echo 'Post New Classified';
-              }else{
-                $mode = 'latest'; 
-                echo 'Add/Edit Post';
-              }
-              
-            ?>
-        </h1>
+        <h1>Add/Edit Post</h1>
+      </div>
 
+      <div class="row">
+        <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">Title</h2>
+        <input type="title" class="form-control" placeholder="Title" required autofocus>
+                <h2 class="form-signin-heading">Summary</h2>
+        <input type="summary" class="form-control" placeholder="Summary" required >
+                <h2 class="form-signin-heading">Description</h2>
+        <input type="description" class="form-control" placeholder="Description" required >
+                <h2 class="form-signin-heading">Condition</h2>
+        <input type="condition" class="form-control" placeholder="Item Condition" required >
+                <h2 class="form-signin-heading">Price</h2>
+        <input type="price" class="form-control" placeholder="Price" required >
+        <button class="btn btn-lg btn-primary btn-block" type="submit_post">Post</button>
+      </form>
+      </div>
+
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
