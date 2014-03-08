@@ -85,11 +85,9 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
 
       <div class="container-fluid">
 
-        <div class="row">
           <h1>Add/Edit Post</h1>
-        </div>
 
-        <div class="row">
+
          <form class="form-signin" role="form" action="add_modify_item.php" method="post">
           <h2 class="form-signin-heading">Title</h2>
           <input type="text" name = "title" class="form-control" placeholder="Title" required autofocus value="<?php echo (isset($item)? $item['title'] : ''); ?>">
@@ -140,9 +138,9 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
                 <br></br>
                 <br></br>
                 <br></br>
-              </div>
 
-            </div>
+		</div>
+			
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

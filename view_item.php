@@ -62,61 +62,68 @@
 		else{
      ?>
 	  
+   <div class="table-responsive">
+		<table class="table table-striped">
+			<tr>
+				<td colspan="2"> <div class="container-fluid ">
+					<h1 style="float: left;padding-right:10px;">Viewing Item:  <?php echo $item['title'] ?></h1>
+					&nbsp;
+					  <?php 
+						if(isset($_SESSION['username']) && $item['user']==$_SESSION['username']){
+						
+					?>
+						<FORM action="add_modify_item.php">
+							<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+							<INPUT type=submit style=" vertical-align: middle;" value="Edit your own item" class="btn" >
+						</FORM>
+					<br>
+					<?php
+						}
+					 ?>
+				</td>
+
+			</tr>
+				
+			<tr>
+				<?php if($item['photo']!= NULL) { ?>
+				<td style="padding-top:50px;" width="30%">
+					<center>
+					
+					<!--PUT IMAGE HERE-HIDDEN UNLESS NOT NULL-->
+					<img src="<?php echo $item['photo'] ?>" style="max-width:100%,vertical-align:top;padding-top:20px;">
+					
+					</center>
+				</td>
+					
+				<?php } ?> 
+
+				</td>
+				<td>
+					<div class="container-fluid ">
 	  
-      <div class="container-fluid ">
-        <h1>Viewing Item ID:  <?php echo $item['id'] ?></h1>
-     
-
-	  <?php 
-			if(isset($_SESSION['username']) && $item['user']==$_SESSION['username']){
-			
-		?>
-			<FORM action="add_modify_item.php">
-				<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-				<INPUT type=submit value="Edit your posted item" class="btn btn-primary pull-center">
-			</FORM>
-		<br>
-		<?php
-			}
-		 ?>
-		 </div>
-		 
-      <div class="container-fluid ">
-        <ul>
-		<li><h2 class="form-signin-heading">Posted by:</h2>
-     
-		
-		
-		<a href="view_profile.php?username=<?php echo $item['user'] ?>">
-		<?php echo $item['user'] ?>
-		</a>
-		
-		
-		
-		
-		
-		<li><h2 class="form-signin-heading">Title</h2>
-        <?php echo $item['title'] ?>
-        <li><h2 class="form-signin-heading">Summary</h2>
-        <?php echo $item['summary'] ?>
-        <li><h2 class="form-signin-heading">Description</h2>
-        <?php echo $item['description'] ?>
-        <li><h2 class="form-signin-heading">Condition</h2>
-        <?php echo $item['cond'] ?>
-        <li><h2 class="form-signin-heading">Price</h2>
-        <?php echo $item['price'] ?>
-		<li><h2 class="form-signin-heading">Date</h2>
-        <?php echo $item['date_listed'] ?>
-		</ul>
-      </div>
-
-
-	
-	<?php
- 		}
-     ?>
-	 
-	 
+					<ul>
+					<li><h3 class="form-signin-heading">Posted by:</h2>
+					<a href="view_profile.php?username=<?php echo $item['user'] ?>">
+					<?php echo $item['user'] ?>
+					</a>
+					<li><h3 class="form-signin-heading">ID</h2>
+					<?php echo $item['id'] ?>
+					<li><h3 class="form-signin-heading">Summary</h2>
+					<?php echo $item['summary'] ?>
+					<li><h3 class="form-signin-heading">Description</h2>
+					<?php echo $item['description'] ?>
+					<li><h3 class="form-signin-heading">Condition</h2>
+					<?php echo $item['cond'] ?>
+					<li><h3 class="form-signin-heading">Price</h2>
+					<?php echo $item['price'] ?>
+					<li><h3 class="form-signin-heading">Date</h2>
+					<?php echo $item['date_listed'] ?>
+					</ul>
+					</div>
+				</td>
+			</tr>
+		</table>
+	 <?php } ?> 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

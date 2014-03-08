@@ -1,20 +1,14 @@
 <?php
 	include('header.php');
 
-	if (isset($_SESSION['username'])){
-		//echo $_GET['id'];
-		if ($stmt = $conn->prepare("SELECT * FROM item WHERE user = ?")) {
-			$stmt->bind_param('s', $_SESSION['username']);
-			$stmt->execute();
-			$res = $stmt->get_result();
-			if ($res -> num_rows == 0) {
-				$error = 'NoItemPosted';
-				}
+	if ($stmt = $conn->prepare("SELECT * FROM item ORDER BY id DESC")) {
+		$stmt->execute();
+		$res = $stmt->get_result();
+		if ($res -> num_rows == 0) {
+			$error = 'NoItemPosted';
 			}
 		}
-	else{
-		$error = 'NotLoggedIn';
-		}
+	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +19,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>View your list of items</title>
+    <title>View all items</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -44,34 +38,91 @@
   </head>
 
   <body>
+  	<?php include('navigation.html'); ?>
+	
 	<div class="container-fluid ">
-	<h1>Your posted items</h1></div>
-	<?php include('navigation.html'); ?>
-
-    <div class="container-fluid">
-      
-	<?php
+	<table class="table table-striped">
+		 <thead>
+			<tr>
+				<th colspan="2"> <div class="container-fluid ">
+					<h1>All listed items</h1>
+				</th>
+			</tr>
+		</thead>
+			
+			
+		<?php
         if (isset($error) && $error == "NoItemPosted"){
-    ?>
+		?>
+		<tr>
+			<td>
 		<div class="container-fluid ">
-			<p>You have no items posted yet!
-			<p>Click <a href="add_modify_item.php">here</a> to create your first one!
+			<p>No items posted yet!
+			<p>Click <a href="add_modify_item.php">here</a> to start!
 		
 		</div>
-	<?php
-	    }
-		else if(isset($error) && $error == "NotLoggedIn"){
-     ?>
-		<div class="container-fluid ">
-			<p>Error! You are not logged in!
-			<p>Click <a href="signin.php">here</a> to login!
-		</div>
+		</td>
+		</tr>
+		</table>
 	<?php
 	    }
 		else{
      ?>
 	  
-		 
+      <?php
+	    
+		while($item=$res ->fetch_assoc()){
+		
+		?>
+		<tr>
+			<?php if($item['photo']!= NULL) { ?>
+			<td style="padding-top:50px;" width="30%">
+				<center>
+				
+				<!--PUT IMAGE HERE-HIDDEN UNLESS NOT NULL-->
+				<img src="<?php echo $item['photo'] ?>" style="max-width:100%,vertical-align:top;padding-top:20px;">
+				
+				</center>
+			</td>
+							<?php } ?> 
+		
+			<td style="padding-left:50px;"><h2><a href="view_item.php?id=<?php echo $item['id'] ?>"><?php echo $item['title'] ?></a></h2>
+				<p>
+				<ul>
+				<li><b>ID:</b> <?php echo $item['id'] ?>
+				<li><b>Summary:</b> <?php echo $item['summary'] ?>
+				<li><b>Date Listed:</b> <?php echo $item['date_listed'] ?>
+
+				</ul>
+				
+			</td>
+		</tr>
+		<?php
+		}	
+		?>
+		
+
+		<?php
+		}	
+		?>
+	  
+	  </table>
+	  
+	  
+	  
+	<?php
+        if (isset($error) && $error == "NoItemPosted"){
+    ?>
+		<div class="container-fluid ">
+			<p>No items posted yet!
+			<p>Click <a href="add_modify_item.php">here</a> to start!
+		
+		</div>
+	  
+	<?php
+	    }
+		else{
+     ?>
       <div class="container-fluid ">
 		
 		
@@ -80,11 +131,7 @@
 		while($item=$res ->fetch_assoc()){
 		
 		?>
-		<li><h2><?php echo $item['title'] ?></h2>
-			<FORM action="add_modify_item.php">
-				<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-				<INPUT type=submit value="Edit" class="btn btn-primary pull-center">
-			</FORM>
+		<li><h2><a href="view_item.php?id=<?php echo $item['id'] ?>"><?php echo $item['title'] ?></a></h2>
 			<p>
 			<ul>
 			<li><b>ID:</b> <?php echo $item['id'] ?>

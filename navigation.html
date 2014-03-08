@@ -1,3 +1,5 @@
+ <!--CODE FOR NVIGATION BAR ON TOP-->
+ 
  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -8,6 +10,8 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">CS2102 Classifieds</a>
+		  
+		  <a class="navbar-brand" href="account.php"><h5>Logged in as: <?php echo $_SESSION['username'] ?> </h5></a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -23,3 +27,4 @@
 		</div>
 	</div>
 </div>
+
