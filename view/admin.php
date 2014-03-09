@@ -93,7 +93,7 @@
                   if($mode == "classifieds") {
                     echo '<th>ID</th><th>Title</th><th>User</th><th>Date posted</th><th>Price</th><th>Summary</th>';
                   } else if($mode == "categories") {
-                    echo '<th>Title</th>';
+                    echo '<th>#</th><th>Title</th>';
                   } else if ($mode == "users") {
                     echo '<th>Username</th><th>Email address</th><th>Gender</th><th>Date joined</th><th>Phone number</th><th>Role</th>';
                   }
@@ -109,13 +109,14 @@
                     echo '<td>'.$arr[$i]->title.'</td>';
                     echo '<td>'.$arr[$i]->user.'</td>';
                     echo '<td>'.$arr[$i]->date_listed.'</td>';
-                    echo '<td>'.$arr[$i]->price.'</td>';
+                    echo '<td>$'.$arr[$i]->price.'</td>';
                     echo '<td>'.$arr[$i]->summary.'</td>';
                     echo '</tr>';
                   }
                 } else if($mode == "categories") {
                   for($i = 0; $i < count($arr); $i++) {
                     echo '<tr>';
+                    echo '<td>'.($i+1).'</td>';
                     echo '<td>'.$arr[$i]->name.'</td>';
                     echo '</tr>';
                   }
@@ -137,9 +138,9 @@
           <?php 
         } else  if($mode =="summary") {
           echo "<div class=''>
-          <span>Total number of users: $numUser</span>
-          <span>Total number of categories: $numCat</span>
-          <span>Total number of classifieds: $numItems</span>";
+          <p>Total number of users: $numUser</p>
+          <p>Total number of categories: $numCat</p>
+          <p>Total number of classifieds: $numItems</p>";
 
         } ?>
       </div>
