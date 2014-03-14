@@ -1,73 +1,59 @@
 <?php
-	include('header.php');
 
-  if (isset($_POST['username'])){
-    if ($stmt = $conn->prepare("SELECT * FROM user WHERE username = ? AND password = ?")) {
-      $stmt->bind_param('ss', $_POST['username'], $_POST['password']);
-      $stmt->execute();
-      $res = $stmt->get_result();
-      
-      if ($res -> num_rows > 0) {
-        $_SESSION['username'] = $_POST['username'];
+include('common.php');
 
-        $row = $res->fetch_assoc();
-        $_SESSION['role'] = $row['role'];
-        $msg = 'You have logged in!';
-      }else{
-        $msg = 'Invalid username or password';
-      }
+if (isset($_POST['username'])){
+  if ($stmt = $conn->prepare("SELECT * FROM user WHERE username = ? AND password = ?")) {
+    $stmt->bind_param('ss', $_POST['username'], $_POST['password']);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    if ($res -> num_rows > 0) {
+      $_SESSION['username'] = $_POST['username'];
+
+      $row = $res->fetch_assoc();
+      $_SESSION['role'] = $row['role'];
+      $msg = 'You have logged in!';
+
+      $host  = $_SERVER['HTTP_HOST'];
+      $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+      $extra = 'index.php';
+      header("Location: http://$host$uri/$extra");
+
+    }else{
+      $msg = '<div class="alert alert-danger">Invalid Username or Password</div>';
     }
   }
+}
+
+$page_title = 'CS2102 Classfieds - Sign In';
+$extra_head = <<<EOT
+<link href="css/signin.css" rel="stylesheet">
+EOT;
+
+include('header.php');
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Sign In</title>
+<div class="container">
 
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <form class="form-signin" role="form" method="post" action="signin.php">
+    <h2 class="form-signin-heading">Please sign in</h2>
+    <input type="username" name="username" class="form-control form-first-item" placeholder="Username" required autofocus>
+    <input type="password" name="password" class="form-control form-last-item" placeholder="Password" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
-    <!-- Custom styles for this template -->
-    <link href="css/signin.css" rel="stylesheet">
+    <br/>
+    <?php
+    if (isset ($msg)){
+      echo $msg;
+    }
+    ?>
+  </form>
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-    <div class="container">
-
-      <?php
-        if (isset ($msg)){
-          echo $msg;
-        }
-      ?>
-
-      <form class="form-signin" role="form" method="post" action="signin.php">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="username" name="username" class="form-control form-first-item" placeholder="Username" required autofocus>
-        <input type="password" name="password" class="form-control form-last-item" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-
-    </div> <!-- /container -->
+</div> <!-- /container -->
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
-</html>
+<?php
+include('footer.php');
+?>

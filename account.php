@@ -1,39 +1,51 @@
 <?php
-	include('header.php');
-
-  echo "test1";
-
+  include('common.php');
+  
+  // Account editing mode
   if (isset($_POST['edit-mode'])){
     if ($_POST['username'] == $_SESSION['username']){
       $stmt = null;
-      echo 1;
-      if (trim($_POST['password']) != '' && $_POST['password'] == $_POST['retype-password']){
-        echo 2;
-
-        $stmt = $conn->prepare("UPDATE user SET email = ?, password = ?, phone = ? WHERE username = ?");
-        $stmt->bind_param('ssss', $_POST['email'], $_POST['password'], $_POST['contact-number'], $_SESSION['username']);
-        $stmt->execute();
-        if ($conn->error) echo $conn->error;
+      if (trim($_POST['password']) != ''){
+        if ($_POST['password'] == $_POST['retype-password']){
+          $stmt = $conn->prepare("UPDATE user SET email = ?, password = ?, phone = ? WHERE username = ?");
+          $stmt->bind_param('ssss', $_POST['email'], $_POST['password'], $_POST['contact-number'], $_SESSION['username']);
+          
+          if ($stmt->execute()){
+            $msg = 'Update successful!';
+          }else{
+            $err = 'An error occurred';
+          }
+          if ($conn->error)  $err = $conn->error;
+        }else{
+          $err = 'Passwords do not match';
+        }
       }else{
         $stmt = $conn->prepare("UPDATE user SET email = ?,  phone = ? WHERE username = ?");
         $stmt->bind_param('sss', $_POST['email'], $_POST['contact-number'], $_SESSION['username']);
-        $stmt->execute();
-        if ($conn->error) echo $conn->error;
+        if ($stmt->execute()){
+          $msg = 'Update successful!';
+        }else{
+          $err = 'An error occurred';
+        }
+        if ($conn->error)  $err = $conn->error;
       }
     }
+    
   }else{
-
+    
+    // Account creation mode
     if (isset($_POST['username'])){
-      echo "test2";
 
       if ($_POST['password'] != $_POST['retype-password']){
-        echo "test3";
         $err = 'Passwords do not match';
       }else{
-        echo "test4";
         if ($stmt = $conn->prepare("INSERT INTO user (email, username, password, phone) VALUES (?, ?, ?, ?)")) {
           $stmt->bind_param('ssss', $_POST['email'], $_POST['username'], $_POST['password'], $_POST['contact-number']);
-          $stmt->execute();
+          if ($stmt->execute()){
+            $msg = 'Update successful!';
+          }else{
+            $err = 'An error occurred';
+          }
         }
       }
     }
@@ -43,8 +55,7 @@
   $editMode = false;
 
   if (isset($_SESSION['username'])){
-    echo "{$_SESSION['username']} is logged in";
-
+    // User is logged in
     if ($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
       $stmt->bind_param('s', $_SESSION['username']);
       $stmt->execute();
@@ -57,45 +68,21 @@
     }
   }
 
+$extra_head = <<<EOT
+  <link href="css/signin.css" rel="stylesheet">
+EOT;
+  include('header.php');
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Create account</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="css/signin.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
 
     <div class="container">
 
-      <?php
-        if (isset($err)){
-          echo $err;
-        }
-      ?>
+
 
       <form class="form-signin" role="form" action="account.php" method="post">
+
+        
+
         <h2 class="form-signin-heading">
           <?php
             if ($editMode) {
@@ -106,6 +93,18 @@
             }
           ?>
         </h2>
+
+<?php
+        if (isset($err)){
+          echo "<div class=\"alert alert-danger\">$err</div>";
+        }
+        ?>
+        <?php
+        if (isset ($msg)){
+          echo "<div class=\"alert alert-success\">$msg</div>";
+        }
+        ?>
+
         <input type="text" name="username" class="form-control form-first-item" placeholder="Username" <?= $editMode? 'readonly' : '' ?> value="<?= $editMode ? $row['username'] : ''; ?>" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password" <?= $editMode ? '' : 'required' ?>>
         <input type="password" name="retype-password" class="form-control" placeholder="Retype Password" <?= $editMode ? '' : 'required' ?>>

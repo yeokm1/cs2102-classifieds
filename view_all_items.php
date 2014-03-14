@@ -1,5 +1,5 @@
 <?php
-	include('header.php');
+	include('common.php');
 
 	if ($stmt = $conn->prepare("SELECT * FROM item ORDER BY id DESC")) {
 		$stmt->execute();

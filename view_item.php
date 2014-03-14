@@ -1,5 +1,5 @@
 <?php
-	include('header.php');
+	include('common.php');
 
 	if (isset($_GET['id'])){
 		//echo $_GET['id'];

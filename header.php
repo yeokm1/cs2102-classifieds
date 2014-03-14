@@ -1,12 +1,72 @@
 <?php
 
-	if(!isset($_SESSION)) {
-		session_start();
-	}
-	
-	$conn = mysqli_connect("localhost", "root", "", "classifieds");
-	if (mysqli_connect_errno($conn)) {
-		echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
-	
+if (!isset($page_title)){
+  $page_title = 'CS2102 Classifieds';
+}
+
+if (!isset($extra_head)){
+  $extra_head = '';
+}
+
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title><?= $page_title ?></title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap theme -->
+  <link href="bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <?= $extra_head ?>
+</head>
+
+<body role="document">
+
+  <!-- Fixed navbar -->
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/cs2102">CS2102 Classifieds</a>
+      </div>
+      <div class="navbar-collapse collapse">
+       <div class="navbar-right">
+        <ul class="nav navbar-nav">
+          <?php
+          if (isset($_SESSION['username'])){
+            ?>
+            <li><a href="account.php">Signed in as <?= $_SESSION['username'] ?></a></li>
+            <li><a href="view_all_items.php">My Listings</a></li>
+            <li><a href="signout.php">Logout</a></li>
+            <?php
+          }else{
+            ?>
+            <li><a href="signin.php">Sign in</a></li>
+            <li><a href="account.php">Register</a></li>
+            <?php
+          }
+          ?>
+        </ul>
+      </div>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
