@@ -1,5 +1,5 @@
 <?php
-include('header.php');
+include('common.php');
 
        //if edit item
 if (isset($_GET['id'])){
