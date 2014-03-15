@@ -22,12 +22,27 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
 
     $message = "Please set the condition of the item";
     echo "<script type='text/javascript'>alert('$message');</script>";
+       //repopulate
+       $item = array("title"=>$_POST['title'],
+                    "summary"=>$_POST['summary'],
+                    "description"=>$_POST['description'],
+                    "cond"=>$_POST['condition'],
+                    "price"=>$_POST['price']
+        );
   }
 //if price is invalid field
   else if(isSet($_POST['price'])){
-    if(!is_double($_POST['price'])){
+    if(!is_numeric($_POST['price'])){
       $message = "Price is invalid, only numbers are allowed. E.g 5.50";
        echo "<script type='text/javascript'>alert('$message');</script>";
+       //repopulate
+       $item = array("title"=>$_POST['title'],
+                    "summary"=>$_POST['summary'],
+                    "description"=>$_POST['description'],
+                    "cond"=>$_POST['condition'],
+                    "price"=>$_POST['price']
+        );
+
     }
   }
   else if(!isSet($_POST['item_id'])){
