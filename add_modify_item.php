@@ -10,6 +10,20 @@ if (isset($_GET['id'])){
     $res = $stmt->get_result();
     $item = $res->fetch_assoc();
 
+       if ($stmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
+      $stmt->bind_param('i', $_GET['id']);
+      $stmt->execute();
+      $res = $stmt->get_result();
+     
+      $x = 0;
+
+          while ( $tags = $res->fetch_assoc()) {
+              $all_tags[$x] =  (string) $tags['cat_name'];
+              print_r($tags);
+              $x++;
+          }
+      }
+       echo $conn->error;
 
   }
 
@@ -90,7 +104,7 @@ include('header.php');
           <input type="text" name = "summary" class="form-control" placeholder="Summary" required value="<?php echo (isset($item)? $item['summary'] : ''); ?>">
           <h2 class="form-signin-heading">Description</h2>
           <input type="text" name = "description" class="form-control" placeholder="Description" required value="<?php echo (isset($item)? $item['description'] : ''); ?>">
-
+         
           <h2 class="form-signin-heading">Condition</h2>
           <input type="text" name = "condition" class="form-control" placeholder="Condition of item" required value="<?php echo (isset($item)? $item['cond'] : ''); ?>" >
 
