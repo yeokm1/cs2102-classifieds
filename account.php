@@ -1,34 +1,80 @@
 <?php
   include('common.php');
+
+  class BindParam{ 
+    private $values = array(), $types = ''; 
+    
+    public function add( $type, &$value ){ 
+        $this->values[] = $value; 
+        $this->types .= $type; 
+    } 
+    
+    public function get(){ 
+        return array_merge(array($this->types), $this->values); 
+    } 
+  }
+
+  function refValues($arr)
+  { 
+    $refs = array();
+
+    foreach ($arr as $key => $value)
+    {
+      $refs[$key] = &$arr[$key]; 
+    }
+
+    return $refs; 
+  }
   
   // Account editing mode
   if (isset($_POST['edit-mode'])){
     if ($_POST['username'] == $_SESSION['username']){
       $stmt = null;
+      
+      // Process photo uploads
+      if (isset($_FILES['photo'])){
+        include_once('imageUploadHandler.php');
+        $photo_path = processUpload('photo');
+      }
+      
+      // Process password
       if (trim($_POST['password']) != ''){
-        if ($_POST['password'] == $_POST['retype-password']){
-          $stmt = $conn->prepare("UPDATE user SET email = ?, password = ?, phone = ? WHERE username = ?");
-          $stmt->bind_param('ssss', $_POST['email'], $_POST['password'], $_POST['contact-number'], $_SESSION['username']);
-          
-          if ($stmt->execute()){
-            $msg = 'Update successful!';
-          }else{
-            $err = 'An error occurred';
-          }
-          if ($conn->error)  $err = $conn->error;
+        if ($_POST['password'] == $_POST['retype-password']){          
+          $new_password = $_POST['password'];
         }else{
           $err = 'Passwords do not match';
         }
-      }else{
-        $stmt = $conn->prepare("UPDATE user SET email = ?,  phone = ? WHERE username = ?");
-        $stmt->bind_param('sss', $_POST['email'], $_POST['contact-number'], $_SESSION['username']);
-        if ($stmt->execute()){
-          $msg = 'Update successful!';
-        }else{
-          $err = 'An error occurred';
-        }
-        if ($conn->error)  $err = $conn->error;
       }
+      
+      $bindParam = new BindParam();
+      
+      $build_stmt = 'UPDATE user SET email = ?, phone = ? ';
+      $bindParam->add('s', $_POST['email']);
+      $bindParam->add('s', $_POST['contact-number']);
+      
+      if (isset($new_password)){
+        $build_stmt .=  ', password = ?';
+        $bindParam->add('s', $new_password);
+      }
+      
+      if (isset($photo_path)){
+        $build_stmt .= ', photo = ?';
+        $bindParam->add('s', $photo_path);
+      }
+      
+      $build_stmt .= ' WHERE username = ?';
+      $bindParam->add('s', $_POST['username']);
+      
+      $stmt = $conn->prepare($build_stmt);
+      echo $conn->error;
+      call_user_func_array(array($stmt, 'bind_param'), refValues($bindParam->get())); 
+          
+      if ($stmt->execute()){
+        $msg = 'Update successful!';
+      }else{
+        $err = 'An error occurred<br>' . $conn->error;
+      }
+        
     }
     
   }else{
@@ -39,12 +85,13 @@
       if ($_POST['password'] != $_POST['retype-password']){
         $err = 'Passwords do not match';
       }else{
+        
         if ($stmt = $conn->prepare("INSERT INTO user (email, username, password, phone) VALUES (?, ?, ?, ?)")) {
           $stmt->bind_param('ssss', $_POST['email'], $_POST['username'], $_POST['password'], $_POST['contact-number']);
           if ($stmt->execute()){
-            $msg = 'Update successful!';
+            $msg = 'Account created successfully! You may now <a href="signin.php">sign in</a>.';
           }else{
-            $err = 'An error occurred';
+            $err = 'An error occurred<br>' . $conn->error;
           }
         }
       }
@@ -79,7 +126,7 @@ EOT;
 
 
 
-      <form class="form-signin" role="form" action="account.php" method="post">
+      <form class="form-signin" role="form" enctype="multipart/form-data" action="account.php" method="post">
 
         
 
@@ -110,6 +157,12 @@ EOT;
         <input type="password" name="retype-password" class="form-control" placeholder="Retype Password" <?= $editMode ? '' : 'required' ?>>
         <input type="email" name="email" class="form-control" placeholder="Email Address" value="<?= $editMode ? $row['email'] : ''; ?>" required>
         <input type="text" name="contact-number" class="form-control form-last-item" placeholder="Contact Number" value="<?= $editMode ? $row['phone'] : ''; ?>" required>
+        <?php if ($editMode && $row['photo'] != '') { ?>
+          <img src="<?= 'content/profile/'.$row['photo']; ?>" width="300">
+        <?php } ?>
+        <?php if ($editMode) { ?>
+          <input type="file" name="photo" class="form-control form-last-item" placeholder="Photo">
+        <?php } ?>
         <button class="btn btn-lg btn-primary btn-block" type="submit">
           <?php
             if ($editMode) {
