@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2014 at 09:29 AM
+-- Generation Time: Mar 15, 2014 at 10:21 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -36,7 +36,7 @@ INSERT INTO `category` (`name`) VALUES
 --
 
 INSERT INTO `item` (`id`, `user`, `title`, `summary`, `description`, `photo`, `cond`, `price`, `date_listed`) VALUES
-(1, 'john', 'Iphone 5s', 'Still rather new. Includes case.', 'Bought late last year.', NULL, 'Use but still good.', 599.99, '2014-03-08 14:16:06'),
+(1, 'john', 'Iphone 5s', 'Still rather new. Includes case.', 'Bought late last year.', NULL, 'Used but still good.', 599.99, '2014-03-08 14:16:06'),
 (2, 'john', 'Samsung Galaxy S5', 'Won in contest! Get this before anyone else!', 'Unopened. Comes with full accessories pack like charger and cable.', NULL, 'New', 1000, '2014-03-08 14:18:35'),
 (3, 'mary', 'D24 durian', 'Best in Malaysia and Singapore', 'One crate of durians. ', NULL, 'Uneaten', 20, '2014-03-08 14:20:03'),
 (4, 'john', 'Ikea table', 'Glass table. 1 inch thick.', 'Comes in flat pack. Takes about 1 hour to assemble.', NULL, 'New', 100.4, '2014-03-08 14:22:01');
