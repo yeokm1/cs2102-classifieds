@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2014 at 09:21 AM
+-- Generation Time: Mar 15, 2014 at 09:29 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -145,8 +145,9 @@ CREATE TABLE IF NOT EXISTS `views` (
 --
 
 INSERT INTO `views` (`item_id`, `user_id`, `view_date`) VALUES
-(2, 'david', '2014-03-08 14:11:44'),
-(2, 'john', '2014-03-08 14:11:44'),
+(2, 'david', '2014-03-06 14:11:44'),
+(2, 'john', '2014-03-07 14:11:44'),
+(3, 'david', '2014-03-07 14:11:44'),
 (4, 'mary', '2014-03-08 14:11:44');
 
 --
