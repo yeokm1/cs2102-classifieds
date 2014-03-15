@@ -111,8 +111,9 @@
         $err = 'Passwords do not match';
       }else{
         
-        if ($stmt = $conn->prepare("INSERT INTO user (email, username, password, phone) VALUES (?, ?, ?, ?)")) {
-          $stmt->bind_param('ssss', $_POST['email'], $_POST['username'], $_POST['password'], $_POST['contact-number']);
+        if ($stmt = $conn->prepare("INSERT INTO user (email, username, password, phone, photo) VALUES (?, ?, ?, ?, ?)")) {
+          $placeholder_photo = 'placeholder.jpg';
+          $stmt->bind_param('sssss', $_POST['email'], $_POST['username'], $_POST['password'], $_POST['contact-number'], $placeholder_photo);
           if ($stmt->execute()){
             $msg = 'Account created successfully! You may now <a href="signin.php">sign in</a>.';
           }else{
