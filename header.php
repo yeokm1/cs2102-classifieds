@@ -52,7 +52,7 @@ if (!isset($extra_head)){
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/cs2102">CS2102 Classifieds</a>
+        <a class="navbar-brand" href="index.php">CS2102 Classifieds</a>
       </div>
       <div class="navbar-collapse collapse">
        <div class="navbar-right">
