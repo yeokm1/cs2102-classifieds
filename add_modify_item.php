@@ -1,6 +1,21 @@
 <?php
 include('common.php');
 
+//get list of all categories
+ if ($stmt = $conn->prepare("SELECT * FROM category")) {
+    $stmt->execute();
+    $res = $stmt->get_result();
+   // $cat_temp = $res->fetch_assoc();
+   
+      $x = 0;
+
+          while ( $cat_temp = $res->fetch_assoc()) {
+                  $categories[$x] =  (string) $cat_temp['name'];
+              print_r($cat_temp);
+              $x++;
+          }
+  }
+
        //if edit item
 if (isset($_GET['id'])){
 
@@ -104,7 +119,16 @@ include('header.php');
           <input type="text" name = "summary" class="form-control" placeholder="Summary" required value="<?php echo (isset($item)? $item['summary'] : ''); ?>">
           <h2 class="form-signin-heading">Description</h2>
           <input type="text" name = "description" class="form-control" placeholder="Description" required value="<?php echo (isset($item)? $item['description'] : ''); ?>">
-         
+
+
+          <h2 class="form-signin-heading">Description</h2>
+
+          <?php for($x = 0; $x < count($categories); $x++) { ?>
+          <input type="checkbox" name= "ticked_categories" value= "<?php echo $categories[$x]?>"> <?php echo $categories[$x] ?> <br>
+
+          <?php } ?>
+
+
           <h2 class="form-signin-heading">Condition</h2>
           <input type="text" name = "condition" class="form-control" placeholder="Condition of item" required value="<?php echo (isset($item)? $item['cond'] : ''); ?>" >
 
