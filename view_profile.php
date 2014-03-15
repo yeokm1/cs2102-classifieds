@@ -61,6 +61,17 @@ include('header.php');
 						</FORM>
 					<br>
 					<?php
+						} else if($_SESSION['role'] == "admin"){
+					 ?>
+					 
+
+						<FORM action="add_modify_item.php">
+							<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+							<INPUT type=submit style=" vertical-align: middle;" value="Edit profile" class="btn" >
+						</FORM>
+					<br>					
+					
+					<?php
 						}
 					 ?>
 				</td>
