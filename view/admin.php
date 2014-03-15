@@ -99,7 +99,7 @@ include_once("model/User.php");
                 <?php 
                 if($mode == "classifieds") {
                   for($i = 0; $i < count($arr); $i++ ) {
-                    echo '<tr class="clickableRow" href="#" >';
+                    echo "<tr class='clickableRow' href='view_item.php?id=".$arr[$i]->id."'>";
                     echo '<td>'.$arr[$i]->id.'</td>';
                     echo '<td>'.$arr[$i]->title.'</td>';
                     echo '<td>'.$arr[$i]->user.'</td>';
@@ -110,7 +110,7 @@ include_once("model/User.php");
                   }
                 } else if($mode == "users") {
                   for($i = 0; $i < count($arr); $i++) {
-                    echo '<tr class="clickableRow" href="#" >';
+                    echo "<tr class='clickableRow' href='view_profile.php?username=".$arr[$i]->username."'>";
                     echo '<td>'.$arr[$i]->username.'</td>';
                     echo '<td>'.$arr[$i]->email.'</td>';
                     echo '<td>'.$arr[$i]->gender.'</td>';
