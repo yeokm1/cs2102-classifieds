@@ -1,141 +1,94 @@
 <?php
-	include('common.php');
+include('common.php');
 
-	if (isset($_GET['username'])){
-		//echo $_GET['username'];
-		if ($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
-			$stmt->bind_param('s', $_GET['username']);
-			$stmt->execute();
-			$res = $stmt->get_result();
-			$user = $res->fetch_assoc();
-			if ($res -> num_rows == 0) {
-				$error = 'Invalid User: ';
-			}
-		if ($stmt = $conn->prepare("SELECT * FROM item WHERE user = ?")) {
-			$stmt->bind_param('s', $_GET['username']);
-			$stmt->execute();
-			$user_res = $stmt->get_result();
-			if ($user_res -> num_rows == 0) {
-				$user_error = 'NoItemPosted';
-				}
-			}
-		}
-		
-	}
-	else{
-		$_GET['username']="Missing username";
-		$error = 'Invalid User: ';
-	}
-	
+if (isset($_GET['username'])){
+  //echo $_GET['username'];
+  if ($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
+    $stmt->bind_param('s', $_GET['username']);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $user = $res->fetch_assoc();
+    if ($res -> num_rows == 0) {
+      $error = 'Invalid User: ';
+    }
+    if ($stmt = $conn->prepare("SELECT * FROM item WHERE user = ?")) {
+      $stmt->bind_param('s', $_GET['username']);
+      $stmt->execute();
+      $user_res = $stmt->get_result();
+      if ($user_res -> num_rows == 0) {
+        $user_error = 'NoItemPosted';
+      }
+    }
+  }
+
+}
+else{
+  $_GET['username']="Missing username";
+  $error = 'Invalid User: ';
+}
+
 $page_title = 'CS2102 Classfieds - View Profile';
 include('header.php');
 
 ?>
-   
-    <div class="container">
+
+<div class="container">
+  
+  <?php
+    if (isset ($error)){
+  ?>
+    <h1>Invalid username:  <?php echo $_GET['username'] ?></h1>
+  <?php
+    }else{
+  ?>
+
+  <div class="pull-right"><a href="account.php" class="btn btn-default" role="button" style="margin-top:20px;">Edit Profile</a></div>
+  
+  <h1>User: <?= $user['username'] ?></h1>  
+  
+
+  <div class="row" style="margin-top:20px;">
+    <div class="col-md-4">
+      <img src="content/profile/<?= $user['photo'] ?>" style="width:100%;margin-top:30px;">
+    </div>
+    <div class="col-md-3">
+      <h3>User Info</h3>
+      <dl>
+        <dt>Gender</dt>
+        <dl><?= $user['gender'] ?></dl>
+        <dt>Email</dt>
+        <dl><?= $user['email'] ?></dl>
+        <dt>Contact No</dt>
+        <dl><?= $user['phone'] ?></dl>
+      </dl>
+    </div>
+    <div class="col-md-5">
+      <h3>Item(s) Posted</h3>
+
+      <?php if(isset($user_error)) { ?>
+        <p>Nothing!</p>
+      <?php } ?>
+        <dl>
+          <?php
+            while($item=$user_res ->fetch_assoc()){
+          ?>
+          <dt><a href="view_item.php?id=<?php echo $item['id'] ?>">
+          <?php echo $item['title'] ?></a></dt>	
+          <dl><?= $item['summary'] ?></dl>
+          <?php
+            }	
+          ?>
+        </dl>
       
-	<?php
-        if (isset ($error)){
-    ?>
-		<div class="container-fluid ">
-        <h1>Invalid username:  <?php echo $_GET['username'] ?></h1>
       </div>
-	<?php
-	    }
-		else{
-     ?>
-	  
-	  	 
- <div class="table-responsive">
-		<table class="table table-striped">
-			<tr>
-				<td colspan="2"> <div class="container-fluid ">
-					<h1 style="float: left;padding-right:10px;">Viewing User:  <?php echo $user['username'] ?></h1>
-					&nbsp;
-					  <?php 
-						if(isset($_SESSION['username']) && $user['username']==$_SESSION['username']){
-						
-					?>
-						<FORM action="account.php">
-							<INPUT type=submit style=" vertical-align: middle;" value="Edit your own profile" class="btn" >
-						</FORM>
-					<br>
-					<?php
-						} else if($_SESSION['role'] == "admin"){
-					 ?>
-					 
-
-						<FORM action="add_modify_item.php">
-							<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-							<INPUT type=submit style=" vertical-align: middle;" value="Edit profile" class="btn" >
-						</FORM>
-					<br>					
-					
-					<?php
-						}
-					 ?>
-				</td>
-
-			</tr>
-				
-			<tr>
-				<?php if($user['photo']!= NULL) { ?>
-				<td style="padding-top:50px;" width="30%">
-					<center>
-					
-										
-					<!--PUT IMAGE HERE-HIDDEN UNLESS NOT NULL-->
-					<img src="<?php echo $item['photo'] ?>" style="max-width:100%,vertical-align:top;padding-top:20px;">
-					
-					</center>
-				</td>
-					
-				<?php } ?> 
-
-				</td>
-				<td>
-					<div class="container-fluid ">
-						<ul>
-						<li><h2 class="form-signin-heading">Gender</h2>
-						<?php echo $user['gender'] ?>
-						<li><h2 class="form-signin-heading">Contact No</h2>
-						<?php echo $user['phone'] ?>
-						
-						<hr />
-						<li><h2 class="form-signin-heading">Item(s) Posted:</h2>
-						
-						
-						
-						<?php if(isset($user_error)) { ?>
-						<p>No images posted yet!
-						<?php } ?>
-						<ul>
-						<?php
-						
-						while($item=$user_res ->fetch_assoc()){
-						
-						?>
-						
-						<li><a href="view_item.php?id=<?php echo $item['id'] ?>">
-								<b><?php echo $item['title'] ?></b></a>	
-							<p><?php echo $item['summary'] ?>
-						
-						<?php
-						}	
-						?>
-						
-						</ul>
-					</ul>	
-				  </div>
-				</td>
-			</tr>
-		</table>
-	  
-	
-	<?php
-       }
-     ?>
+    </div>
+  
+  <?php
+  }
+  ?>
+  
+</div>
 
 <?php
-  include('footer.php');
+include('footer.php');
 ?>
