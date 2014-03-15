@@ -64,7 +64,7 @@ if (!isset($extra_head)){
             <li><a href="account.php">Hi, <?= $_SESSION['username'] ?></a></li>
 				<?php
 				if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
-				  ?><li>[<a href="admin.php">Admin</a>]</li>
+				  ?><li><a href="admin.php">Admin</a></li>
 				  <?php  
 				}
 				?>
