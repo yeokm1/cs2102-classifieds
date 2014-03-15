@@ -24,6 +24,8 @@ if (!isset($extra_head)){
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap theme -->
   <link href="bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+  
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,700,600' rel='stylesheet' type='text/css'>
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -33,7 +35,8 @@ if (!isset($extra_head)){
   
   <style>
   body{
-    padding-top:50px;
+    padding-top: 50px;
+    font-family: 'Open Sans';
   }
   </style>
 
