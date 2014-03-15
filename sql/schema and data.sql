@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2014 at 09:06 AM
+-- Generation Time: Mar 15, 2014 at 09:21 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `classifieds`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `name` varchar(32) NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`name`) VALUES
+('Fruits'),
+('Furniture'),
+('Household'),
+('Mobile Devices');
 
 -- --------------------------------------------------------
 
@@ -142,7 +163,8 @@ ALTER TABLE `item`
 -- Constraints for table `tagged`
 --
 ALTER TABLE `tagged`
-  ADD CONSTRAINT `tagged_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tagged_ibfk_1` FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`),
+  ADD CONSTRAINT `tagged_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `views`

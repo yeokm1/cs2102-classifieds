@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2014 at 09:06 AM
+-- Generation Time: Mar 15, 2014 at 09:21 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -20,6 +20,16 @@ SET time_zone = "+00:00";
 --
 -- Database: `classifieds`
 --
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`name`) VALUES
+('Fruits'),
+('Furniture'),
+('Household'),
+('Mobile Devices');
 
 --
 -- Dumping data for table `item`
