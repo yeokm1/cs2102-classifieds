@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2014 at 07:33 AM
+-- Generation Time: Mar 15, 2014 at 07:14 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -20,17 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `classifieds`
 --
-
---
--- Dumping data for table `category`
---
-
-INSERT INTO `category` (`name`) VALUES
-('android'),
-('Fruits'),
-('Furniture'),
-('Mobile Devices'),
-('Property');
 
 --
 -- Dumping data for table `item`
@@ -58,6 +47,7 @@ INSERT INTO `tagged` (`item_id`, `cat_name`) VALUES
 --
 
 INSERT INTO `user` (`email`, `username`, `password`, `photo`, `gender`, `phone`, `join_date`, `role`) VALUES
+('admin@admin.com', 'admin', 'admin', NULL, 'female', '1234567', '2014-03-15 14:13:55', 'admin'),
 ('user1@email1.com', 'john', 'john', NULL, 'male', '75319024', '2014-03-08 14:10:29', 'user'),
 ('mary@mary.com', 'mary', 'mary', NULL, 'female', '1902446', '2014-03-08 14:12:22', 'user'),
 ('peter@email2.com', 'peter', 'peter', NULL, 'male', '864202', '2014-03-08 14:11:44', 'user');

@@ -43,17 +43,6 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
---
-
-CREATE TABLE IF NOT EXISTS `category` (
-  `name` varchar(32) NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `item`
 --
 
@@ -83,7 +72,6 @@ CREATE TABLE IF NOT EXISTS `tagged` (
   `cat_name` varchar(32) NOT NULL,
   PRIMARY KEY (`item_id`,`cat_name`),
   KEY `cat_name` (`cat_name`),
-  FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`),
   FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
