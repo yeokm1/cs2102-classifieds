@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2014 at 07:14 AM
+-- Generation Time: Mar 15, 2014 at 07:16 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -36,9 +36,9 @@ INSERT INTO `item` (`id`, `user`, `title`, `summary`, `description`, `photo`, `c
 --
 
 INSERT INTO `tagged` (`item_id`, `cat_name`) VALUES
-(2, 'android'),
 (3, 'Fruits'),
 (4, 'Furniture'),
+(4, 'Household'),
 (1, 'Mobile Devices'),
 (2, 'Mobile Devices');
 
