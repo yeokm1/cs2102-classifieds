@@ -186,10 +186,12 @@ include('header.php');
 
     <?php for($x = 0; $x < count($categories); $x++) { ?>
     <input type="checkbox" name= "ticked_categories[]" value= "<?php echo $categories[$x]?>" <?php
-    for($i = 0; $i < count($all_tags); $i++){
-      if( $categories[$x] == $all_tags[$i] ){
-        echo 'checked="checked"';
-      } 
+    if (isset($all_tags)){
+      for($i = 0; $i < count($all_tags); $i++){
+        if( $categories[$x] == $all_tags[$i] ){
+          echo 'checked="checked"';
+        } 
+      }
     }
     ?> > <?php echo $categories[$x] ?> <br>
 
