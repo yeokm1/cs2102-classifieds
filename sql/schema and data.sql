@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2014 at 09:29 AM
+-- Generation Time: Mar 15, 2014 at 10:21 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -164,7 +164,7 @@ ALTER TABLE `item`
 -- Constraints for table `tagged`
 --
 ALTER TABLE `tagged`
-  ADD CONSTRAINT `tagged_ibfk_1` FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`),
+  ADD CONSTRAINT `tagged_ibfk_1` FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tagged_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

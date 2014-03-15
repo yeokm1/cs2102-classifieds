@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `tagged` (
   `cat_name` varchar(32) NOT NULL,
   PRIMARY KEY (`item_id`,`cat_name`),
   KEY `cat_name` (`cat_name`),
-  FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`),
+  FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
