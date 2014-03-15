@@ -64,6 +64,7 @@ include_once("model/User.php");
             <ul class="nav nav-sidebar">
              <li <?php if($mode=="summary") echo 'class="active"'; ?>><a href="admin.php?action=summary">Summary</a></li>
              <li <?php if($mode=="classifieds") echo 'class="active"'; ?>><a href="admin.php?action=classifieds">All Classifieds</a></li>
+             <li <?php if($mode=="categories") echo 'class="active"'; ?>><a href="admin.php?action=categories">All Categories</a></li>
              <li <?php if($mode=="users") echo 'class="active"'; ?>><a href="admin.php?action=users">All Users</a></li>
            </ul>	
          </div>
@@ -75,13 +76,30 @@ include_once("model/User.php");
               echo 'All Classifieds';
             } else if ($mode == "users") {
               echo 'All Users';
+            } else if ($mode == "categories") {
+              echo 'All Categories';
             } else {
               echo 'Site Summary';
             }
-
             ?>
+			<?php 
+				if($mode == "classifieds") {
+					$url = "add_modify_item.php";
+				} if($mode == "users") {
+					$url = "account.php";
+				} if($mode == "categories") {
+					$url = "add_modify_category.php";
+				}
+				
+				if($mode == "classifieds" || $mode == "users" || $mode == "categories") {
+			?>
+			<div class="pull-right"><a href="<?= $url ?>" role="button" class="btn btn-default">Add</a></div> 
+			
+			<?php } ?>
+			
           </h1>
-          <?php if($mode == "classifieds" || $mode == "users" ) { ?>
+		  
+          <?php if($mode == "classifieds" || $mode == "users" || $mode == "categories" ) { ?>
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
@@ -89,6 +107,8 @@ include_once("model/User.php");
                   <?php 
                   if($mode == "classifieds") {
                     echo '<th>ID</th><th>Title</th><th>User</th><th>Date posted</th><th>Price</th><th>Summary</th>';
+                  } else if($mode == "categories") {
+                    echo '<th>#</th><th>Title</th>';
                   } else if ($mode == "users") {
                     echo '<th>Username</th><th>Email address</th><th>Gender</th><th>Date joined</th><th>Phone number</th><th>Role</th>';
                   }
@@ -106,6 +126,13 @@ include_once("model/User.php");
                     echo '<td>'.$arr[$i]->date_listed.'</td>';
                     echo '<td>$'.$arr[$i]->price.'</td>';
                     echo '<td>'.$arr[$i]->summary.'</td>';
+                    echo '</tr>';
+                  }
+                } else if($mode == "categories") {
+                  for($i = 0; $i < count($arr); $i++) {
+                    echo '<tr class="clickableRow" href="#" >';
+                    echo '<td>'.($i+1).'</td>';
+                    echo '<td>'.$arr[$i]->name.'</td>';
                     echo '</tr>';
                   }
                 } else if($mode == "users") {
@@ -127,7 +154,7 @@ include_once("model/User.php");
         } else  if($mode =="summary") {
           echo "<div class=''>
           <p>Total number of users: $numUser</p>
-         
+          <p>Total number of categories: $numCat</p>
           <p>Total number of classifieds: $numItems</p>";
 
         } ?>
