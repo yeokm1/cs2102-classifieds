@@ -25,16 +25,25 @@
 
     return $refs; 
   }
-  
-  // Account editing mode
-  if (isset($_POST['edit-mode'])){
+
+  function handleEdit(){
+    global $conn;
+    
     if ($_POST['username'] == $_SESSION['username']){
       $stmt = null;
       
+      //print_r($_POST);
+      //print_r($_FILES);
+      
       // Process photo uploads
-      if (isset($_FILES['photo'])){
+      if (isset($_FILES['photo']) && $_FILES['photo']['name'] != ''){
         include_once('imageUploadHandler.php');
-        $photo_path = processUpload('photo');
+        try{
+          $photo_path = processUpload('photo', 'content/profile/');
+        }catch(Exception $e) {
+          $err = 'An error occurred<br>' . $e->getMessage();
+          throw new Exception($err);
+        }
       }
       
       // Process password
@@ -43,6 +52,7 @@
           $new_password = $_POST['password'];
         }else{
           $err = 'Passwords do not match';
+          throw new Exception($err);
         }
       }
       
@@ -73,8 +83,23 @@
         $msg = 'Update successful!';
       }else{
         $err = 'An error occurred<br>' . $conn->error;
+        throw new Exception($err);
       }
-        
+      
+      return $msg;        
+    
+    }else{
+      $err = 'Invalid user';
+      throw new Exception($err); 
+    }
+  }
+  
+  // Account editing mode
+  if (isset($_POST['edit-mode'])){
+    try{
+      $msg = handleEdit();
+    }catch(Exception $e){
+      $err = $e->getMessage();
     }
     
   }else{
