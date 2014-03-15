@@ -22,12 +22,27 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
 
     $message = "Please set the condition of the item";
     echo "<script type='text/javascript'>alert('$message');</script>";
+       //repopulate
+       $item = array("title"=>$_POST['title'],
+                    "summary"=>$_POST['summary'],
+                    "description"=>$_POST['description'],
+                    "cond"=>$_POST['condition'],
+                    "price"=>$_POST['price']
+        );
   }
 //if price is invalid field
   else if(isSet($_POST['price'])){
-    if(!is_double($_POST['price'])){
+    if(!is_numeric($_POST['price'])){
       $message = "Price is invalid, only numbers are allowed. E.g 5.50";
        echo "<script type='text/javascript'>alert('$message');</script>";
+       //repopulate
+       $item = array("title"=>$_POST['title'],
+                    "summary"=>$_POST['summary'],
+                    "description"=>$_POST['description'],
+                    "cond"=>$_POST['condition'],
+                    "price"=>$_POST['price']
+        );
+
     }
   }
   else if(!isSet($_POST['item_id'])){
@@ -67,6 +82,10 @@ include('header.php');
          <form class="form-signin" role="form" action="add_modify_item.php" method="post">
           <h2 class="form-signin-heading">Title</h2>
           <input type="text" name = "title" class="form-control" placeholder="Title" required autofocus value="<?php echo (isset($item)? $item['title'] : ''); ?>">
+          <h2 class="form-signin-heading">Photo</h2>
+          <img src="img/noimg.jpg" alt="">
+          <h2 class="form-signin-heading">Select a file:</h2>
+          <input type="file" name="img"> 
           <h2 class="form-signin-heading">Summary</h2>
           <input type="text" name = "summary" class="form-control" placeholder="Summary" required value="<?php echo (isset($item)? $item['summary'] : ''); ?>">
           <h2 class="form-signin-heading">Description</h2>
