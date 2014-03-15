@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2014 at 07:59 AM
+-- Generation Time: Mar 15, 2014 at 09:06 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -22,6 +22,16 @@ SET time_zone = "+00:00";
 --
 
 --
+-- Dumping data for table `item`
+--
+
+INSERT INTO `item` (`id`, `user`, `title`, `summary`, `description`, `photo`, `cond`, `price`, `date_listed`) VALUES
+(1, 'john', 'Iphone 5s', 'Still rather new. Includes case.', 'Bought late last year.', NULL, 'Use but still good.', 599.99, '2014-03-08 14:16:06'),
+(2, 'john', 'Samsung Galaxy S5', 'Won in contest! Get this before anyone else!', 'Unopened. Comes with full accessories pack like charger and cable.', NULL, 'New', 1000, '2014-03-08 14:18:35'),
+(3, 'mary', 'D24 durian', 'Best in Malaysia and Singapore', 'One crate of durians. ', NULL, 'Uneaten', 20, '2014-03-08 14:20:03'),
+(4, 'john', 'Ikea table', 'Glass table. 1 inch thick.', 'Comes in flat pack. Takes about 1 hour to assemble.', NULL, 'New', 100.4, '2014-03-08 14:22:01');
+
+--
 -- Dumping data for table `tagged`
 --
 
@@ -31,6 +41,26 @@ INSERT INTO `tagged` (`item_id`, `cat_name`) VALUES
 (4, 'Household'),
 (1, 'Mobile Devices'),
 (2, 'Mobile Devices');
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`email`, `username`, `password`, `photo`, `gender`, `phone`, `join_date`, `role`) VALUES
+('admin@admin.com', 'admin', 'admin', NULL, 'female', '1234567', '2014-03-15 14:13:55', 'admin'),
+('david@david.com', 'david', 'david', NULL, 'male', '1245203', '2014-03-15 14:42:18', 'user'),
+('user1@email1.com', 'john', 'john', NULL, 'male', '75319024', '2014-03-08 14:10:29', 'user'),
+('mary@mary.com', 'mary', 'mary', NULL, 'female', '1902446', '2014-03-08 14:12:22', 'user'),
+('peter@email2.com', 'peter', 'peter', NULL, 'male', '864202', '2014-03-08 14:11:44', 'user');
+
+--
+-- Dumping data for table `views`
+--
+
+INSERT INTO `views` (`item_id`, `user_id`, `view_date`) VALUES
+(2, 'david', '2014-03-08 14:11:44'),
+(2, 'john', '2014-03-08 14:11:44'),
+(4, 'mary', '2014-03-08 14:11:44');
 SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
