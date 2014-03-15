@@ -75,7 +75,19 @@ CREATE TABLE IF NOT EXISTS `tagged` (
   FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `views`
+--
+
+CREATE TABLE IF NOT EXISTS `views` (
+  `item_id` int(11) NOT NULL,
+  `user_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`item_id`,`user_id`),
+  FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

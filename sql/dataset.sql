@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2014 at 07:16 AM
+-- Generation Time: Mar 15, 2014 at 07:44 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -48,9 +48,19 @@ INSERT INTO `tagged` (`item_id`, `cat_name`) VALUES
 
 INSERT INTO `user` (`email`, `username`, `password`, `photo`, `gender`, `phone`, `join_date`, `role`) VALUES
 ('admin@admin.com', 'admin', 'admin', NULL, 'female', '1234567', '2014-03-15 14:13:55', 'admin'),
+('david@david.com', 'david', 'david', NULL, 'male', '1245203', '2014-03-15 14:42:18', 'user'),
 ('user1@email1.com', 'john', 'john', NULL, 'male', '75319024', '2014-03-08 14:10:29', 'user'),
 ('mary@mary.com', 'mary', 'mary', NULL, 'female', '1902446', '2014-03-08 14:12:22', 'user'),
 ('peter@email2.com', 'peter', 'peter', NULL, 'male', '864202', '2014-03-08 14:11:44', 'user');
+
+--
+-- Dumping data for table `views`
+--
+
+INSERT INTO `views` (`item_id`, `user_id`) VALUES
+(2, 'david'),
+(2, 'john'),
+(4, 'mary');
 SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
