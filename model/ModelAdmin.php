@@ -6,7 +6,7 @@ include_once("model/Category.php");
 
 class ModelAdmin {
 	public function getAllItems() {
-		include('header.php');
+		include('common.php');
 		if ($stmt = $conn->prepare("SELECT * FROM item")) {
 			$stmt->execute();
 			$result = $stmt->get_result();
@@ -25,7 +25,7 @@ class ModelAdmin {
 	}
 	
 	public function getAllUsers() {
-		include('header.php');
+		include('common.php');
 		if ($stmt = $conn->prepare("SELECT * FROM user")) {
 			$stmt->execute();
 			$result = $stmt->get_result();
@@ -44,7 +44,7 @@ class ModelAdmin {
 	}
 	
 	public function getAllCategories() {
-		include('header.php');
+		include('common.php');
 		if ($stmt = $conn->prepare("SELECT * FROM category")) {
 			$stmt->execute();
 			$result = $stmt->get_result();
@@ -62,7 +62,7 @@ class ModelAdmin {
 	}
 	
 	public function getNumUser() {
-		include('header.php');
+		include('common.php');
 		if ($stmt = $conn->prepare("SELECT COUNT(*) FROM user")) {
 			$stmt->execute();
 			$result = $stmt->get_result();
@@ -76,7 +76,7 @@ class ModelAdmin {
 	}
 	
 	public function getNumItems() {
-		include('header.php');
+		include('common.php');
 		if ($stmt = $conn->prepare("SELECT COUNT(*) FROM item")) {
 			$stmt->execute();
 			$result = $stmt->get_result();
@@ -90,7 +90,7 @@ class ModelAdmin {
 	}
 	
 	public function getNumCat() {
-		include('header.php');
+		include('common.php');
 		if ($stmt = $conn->prepare("SELECT COUNT(*) FROM category")) {
 			$stmt->execute();
 			$result = $stmt->get_result();

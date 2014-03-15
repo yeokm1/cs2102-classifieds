@@ -1,7 +1,7 @@
 <?php 
-  include_once("model/Item.php");
-  include_once("model/Category.php");
-  include_once("model/User.php");
+include_once("model/Item.php");
+include_once("model/Category.php");
+include_once("model/User.php");
 ?>
 
 <!DOCTYPE html>
@@ -86,7 +86,7 @@
           </h1>
           <?php if($mode == "classifieds" || $mode == "users" || $mode == "categories") { ?>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <?php 
@@ -104,7 +104,7 @@
                 <?php 
                 if($mode == "classifieds") {
                   for($i = 0; $i < count($arr); $i++ ) {
-                    echo '<tr>';
+                    echo '<tr class="clickableRow" href="#" >';
                     echo '<td>'.$arr[$i]->id.'</td>';
                     echo '<td>'.$arr[$i]->title.'</td>';
                     echo '<td>'.$arr[$i]->user.'</td>';
@@ -115,14 +115,14 @@
                   }
                 } else if($mode == "categories") {
                   for($i = 0; $i < count($arr); $i++) {
-                    echo '<tr>';
+                    echo '<tr class="clickableRow" href="#" >';
                     echo '<td>'.($i+1).'</td>';
                     echo '<td>'.$arr[$i]->name.'</td>';
                     echo '</tr>';
                   }
                 } else if($mode == "users") {
                   for($i = 0; $i < count($arr); $i++) {
-                    echo '<tr>';
+                    echo '<tr class="clickableRow" href="#" >';
                     echo '<td>'.$arr[$i]->username.'</td>';
                     echo '<td>'.$arr[$i]->email.'</td>';
                     echo '<td>'.$arr[$i]->gender.'</td>';
@@ -153,5 +153,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="../../dist/js/bootstrap.min.js"></script>
     <script src="../../assets/js/docs.min.js"></script>
+    <script> jQuery(document).ready(function($) {
+      $(".clickableRow").click(function() {
+        window.document.location = $(this).attr("href");
+      });
+      $('.clickableRow').css('cursor', 'pointer');
+    });</script>
   </body>
   </html>
