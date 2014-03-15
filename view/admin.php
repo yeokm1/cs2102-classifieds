@@ -130,7 +130,7 @@ include_once("model/User.php");
                   }
                 } else if($mode == "categories") {
                   for($i = 0; $i < count($arr); $i++) {
-                    echo '<tr class="clickableRow" href="#" >';
+                    echo '<tr class="clickableRow" href="add_modify_category.php?title='.$arr[$i]->name.'" >';
                     echo '<td>'.($i+1).'</td>';
                     echo '<td>'.$arr[$i]->name.'</td>';
                     echo '</tr>';
