@@ -8,20 +8,19 @@
 			$this->m_adm = new ModelAdmin();
 		} 
 		public function invoke() {
-			//if(!isset($_SESSION)) {
-			//	session_start();
-			//}
-			//if(!isset($_SESSION['role']) || $_SESSION['role'] != "admin") {
+			if(!isset($_SESSION)) {
+				session_start();
+			}
+			if(!isset($_SESSION['role']) || $_SESSION['role'] != "admin") {
 			//	header('HTTP/1.0 403 Forbidden'):
-			//	header('Location: index.php');
-			//	exit;
-			//}
+				header('Location: index.php');
+				exit;
+			}
 
 			if(isset($_GET['action'])) {
 					$this->handle_action();
 			}
-			else
-			{
+			else {
 				$this -> handle_summary();
 			}
 		}
@@ -59,7 +58,7 @@
 		function handle_summary() {
 			$numUser = $this->m_adm->getNumUser();
 			$numItems = $this->m_adm->getNumItems();
-			$numCat = $this->m_adm->getNumCat();
+		//	$numCat = $this->m_adm->getNumCat();
 			$mode = "summary";
 			include("view/admin.php");
 		}
