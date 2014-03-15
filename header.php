@@ -61,11 +61,13 @@ if (!isset($extra_head)){
           if (isset($_SESSION['username'])){
             ?>
             <li><a href="account.php">Signed in as <?= $_SESSION['username'] ?></a></li>
-            <li><a href="view_all_items.php">My Listings</a></li>
+            <li><a href="view_all_items.php">All Items</a></li>
+            <li><a href="view_my_items.php">My Listings</a></li>
             <li><a href="signout.php">Logout</a></li>
             <?php
           }else{
             ?>
+            <li><a href="view_all_items.php">All Items</a></li>
             <li><a href="signin.php">Sign in</a></li>
             <li><a href="account.php">Register</a></li>
             <?php
