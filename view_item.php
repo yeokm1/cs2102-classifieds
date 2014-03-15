@@ -48,7 +48,7 @@ include('header.php');
 					?>
 						<FORM action="add_modify_item.php">
 							<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-							<INPUT type=submit style=" vertical-align: middle;" value="Edit your own item" class="btn" >
+							<INPUT type=submit style=" vertical-align: middle;" value="Edit your own item" class="btn btn-primary" >
 						</FORM>
 					<br>
 					
@@ -71,40 +71,49 @@ include('header.php');
 			</tr>
 				
 			<tr>
-				<?php if($item['photo']!= NULL) { ?>
-				<td style="padding-top:50px;" width="30%">
+			<td width="30%">
+				<?php 
+				$itemphoto='img/noimg.jpg';
+				if($item['photo']!= NULL) 
+					$itemphoto=$item['photo']; ?>
+				
 					<center>
 					
 					<!--PUT IMAGE HERE-HIDDEN UNLESS NOT NULL-->
-					<img src="<?php echo $item['photo'] ?>" style="max-width:100%,vertical-align:top;padding-top:20px;">
+					<img src="<?php echo $itemphoto ?>" class="img-thumbnail" style="max-width:500px">
 					
 					</center>
-				</td>
-					
-				<?php } ?> 
-
 				</td>
 				<td>
 					<div class="container-fluid ">
 	  
-					<ul>
-					<li><h3 class="form-signin-heading">Posted by:</h2>
-					<a href="view_profile.php?username=<?php echo $item['user'] ?>">
-					<?php echo $item['user'] ?>
-					</a>
-					<li><h3 class="form-signin-heading">ID</h2>
-					<?php echo $item['id'] ?>
-					<li><h3 class="form-signin-heading">Summary</h2>
-					<?php echo $item['summary'] ?>
-					<li><h3 class="form-signin-heading">Description</h2>
-					<?php echo $item['description'] ?>
-					<li><h3 class="form-signin-heading">Condition</h2>
-					<?php echo $item['cond'] ?>
-					<li><h3 class="form-signin-heading">Price</h2>
-					<?php echo $item['price'] ?>
-					<li><h3 class="form-signin-heading">Date</h2>
-					<?php echo $item['date_listed'] ?>
-					</ul>
+					<dl>
+					<dt><h3 class="form-signin-heading">Posted by:</h3></dt>
+					<dd><a href="view_profile.php?username=<?php echo $item['user'] ?>">
+					<dd><?php echo $item['user'] ?></a></dd>					
+					<dt><h3 class="form-signin-heading">Date Listed</h3></dt>
+					<dd><?php echo $item['date_listed'] ?></dd>
+					<dt><h3 class="form-signin-heading">Summary</h3></dt>
+					<dd><?php echo $item['summary'] ?></dd>
+					<dt><h3 class="form-signin-heading">Description</h3></dt>
+					<dd><?php echo $item['description'] ?></dd>
+					<dt><h3 class="form-signin-heading">Condition</h3></dt>
+					<dd><?php echo $item['cond'] ?></dd>
+					<dt><h3 class="form-signin-heading">Price</h3></dt>
+					<dd><?php echo $item['price'] ?></dd>
+					<dt><h3 class="form-signin-heading">Categories</h3></dt>
+					<dd>
+				 <?php if ($itemCatStmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
+						  $itemCatStmt->bind_param('i', $item['id']);
+						  $itemCatStmt->execute();
+						  $itemCatRes = $itemCatStmt->get_result();
+						  $itemCatAll= array();
+						  while($cat=$itemCatRes ->fetch_assoc()){
+								$itemCatAll[] = '<a href="view_all_items.php?cat='.$cat['cat_name'].'">'.$cat['cat_name'].'</a>';  
+							  }
+						  }
+						  echo (implode (", " , $itemCatAll ));?>	</dd>		
+					</dl>
 					</div>
 				</td>
 			</tr>

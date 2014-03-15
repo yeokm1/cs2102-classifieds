@@ -52,7 +52,7 @@ if (!isset($extra_head)){
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="view_all_items.php">CS2102 Classifieds</a>
+        <a class="navbar-brand" href="index.php">CS2102 Classifieds</a>
       </div>
       <div class="navbar-collapse collapse">
        <div class="navbar-right">
@@ -61,15 +61,18 @@ if (!isset($extra_head)){
           <?php
           if (isset($_SESSION['username'])){
             ?>
-            <li><a href="account.php">Hi, <?= $_SESSION['username'] ?></a></li>
+            <li><a href="view_profile.php?username=<?php echo $_SESSION['username'] ?>"><b>Hi, <?= $_SESSION['username'] ?></b></a></li>
 				<?php
 				if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
 				  ?><li><a href="admin.php">Admin</a></li>
 				  <?php  
 				}
 				?>
+			<li><a href="view_all_items.php">View all</a></li>
             <li><a href="add_modify_item.php">Sell</a></li>
             <li><a href="view_my_items.php">My Classifieds</a></li>
+			 <li>
+			 <a href="account.php">Edit Account</a></li>
             <li><a href="signout.php">Logout</a></li>
             <?php
           }else{ 
