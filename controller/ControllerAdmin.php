@@ -58,7 +58,7 @@
 		function handle_summary() {
 			$numUser = $this->m_adm->getNumUser();
 			$numItems = $this->m_adm->getNumItems();
-		//	$numCat = $this->m_adm->getNumCat();
+			$numCat = $this->m_adm->getNumCat();
 			$mode = "summary";
 			include("view/admin.php");
 		}
