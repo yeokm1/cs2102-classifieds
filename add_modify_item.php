@@ -82,6 +82,10 @@ include('header.php');
          <form class="form-signin" role="form" action="add_modify_item.php" method="post">
           <h2 class="form-signin-heading">Title</h2>
           <input type="text" name = "title" class="form-control" placeholder="Title" required autofocus value="<?php echo (isset($item)? $item['title'] : ''); ?>">
+          <h2 class="form-signin-heading">Photo</h2>
+          <img src="img/noimg.jpg" alt="">
+          <h2 class="form-signin-heading">Select a file:</h2>
+          <input type="file" name="img"> 
           <h2 class="form-signin-heading">Summary</h2>
           <input type="text" name = "summary" class="form-control" placeholder="Summary" required value="<?php echo (isset($item)? $item['summary'] : ''); ?>">
           <h2 class="form-signin-heading">Description</h2>
