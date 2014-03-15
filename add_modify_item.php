@@ -23,7 +23,13 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
     $message = "Please set the condition of the item";
     echo "<script type='text/javascript'>alert('$message');</script>";
   }
-
+//if price is invalid field
+  else if(isSet($_POST['price'])){
+    if(!is_double($_POST['price'])){
+      $message = "Price is invalid, only numbers are allowed. E.g 5.50";
+       echo "<script type='text/javascript'>alert('$message');</script>";
+    }
+  }
   else if(!isSet($_POST['item_id'])){
     if ($stmt = $conn->prepare("INSERT INTO item (user, title, summary, description, cond, price) VALUES (?, ?, ?, ?, ?, ?)")) {
 
