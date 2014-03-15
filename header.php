@@ -61,6 +61,11 @@ if (!isset($extra_head)){
           if (isset($_SESSION['username'])){
             ?>
             <li><a href="account.php">Signed in as <?= $_SESSION['username'] ?></a></li>
+            <?php
+            if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+              ?><li><a href="admin.php">Admin</a></li><?php  
+            }
+            ?>
             <li><a href="view_all_items.php">All Items</a></li>
             <li><a href="view_my_items.php">My Listings</a></li>
             <li><a href="signout.php">Logout</a></li>
