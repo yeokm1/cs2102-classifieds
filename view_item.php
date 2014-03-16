@@ -75,7 +75,7 @@ include('header.php');
 				<?php 
 				$itemphoto='img/noimg.jpg';
 				if($item['photo']!= NULL) 
-					$itemphoto=$item['photo']; ?>
+					$itemphoto='content/item/'.$item['photo']; ?>
 				
 					<center>
 					

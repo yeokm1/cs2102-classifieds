@@ -77,7 +77,7 @@ include('header.php');
 				<div class="form-group">
 					<label>Sort By</label>					
 					<!--ORDER BY-->
-					<select name="orderby" style="width:200px;display:inline-block;" class="form-control">
+					<select name="orderby" style="width:150px;display:inline-block;" class="form-control">
 					<?php 
 
 						$orderby='';;
@@ -94,7 +94,7 @@ include('header.php');
 					</select>
 
 					<!--ORDER -->
-					<select name="order" style="width:200px;display:inline-block;" class="form-control">
+					<select name="order" style="width:150px;display:inline-block;" class="form-control">
 					<?php 
 						$order=$_GET['order'];
 						$sel="selected";
@@ -153,7 +153,7 @@ include('header.php');
 		<?php 
 			$itemphoto='img/noimg.jpg';
 			if($item['photo']!= NULL) 
-				$itemphoto=$item['photo']; ?>
+				$itemphoto='content/item/'.$item['photo']; ?>
 			
 			<!--PUT IMAGE HERE-HIDDEN UNLESS NOT NULL-->
 			<a href="view_item.php?id=<?php echo $item['id'] ?>" title="Click to find out more!"><img src="<?php echo $itemphoto ?>" class="img-thumbnail" style="max-width:200px"></a>
