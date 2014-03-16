@@ -101,32 +101,6 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 
       }
 
-       //reload item
-      if ($stmt = $conn->prepare("SELECT * FROM item WHERE id = ?")) {
-        $stmt->bind_param('i', $_POST['item_id']);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $item = $res->fetch_assoc();
-
-        if ($stmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
-          $stmt->bind_param('i', $_POST['item_id']);
-          $stmt->execute();
-          $res = $stmt->get_result();
-
-          $x = 0;
-          $all_tags = array();
-
-          while ( $tags = $res->fetch_assoc()) {
-            $all_tags[$x] =  (string) $tags['cat_name'];
-            //print_r($tags);
-            $x++;
-          }
-        }
-        echo $conn->error;
-
-      }
-      //stopped
-
     }
 
   }
