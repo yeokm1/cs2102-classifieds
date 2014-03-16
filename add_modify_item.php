@@ -166,40 +166,55 @@ include('header.php');
 
 <div class="container">
 
-  <h1>Add/Edit Item</h1>
+<h1>Add/Edit Item</h1>
 
+<form role="form" action="add_modify_item.php" method="post">
+    <div class="col-md-4" style="padding-top:30px;">
+        <div class="form-group">
+            <img src="img/noimg.jpg" alt="">
+        </div>
+        <div class="form-group">            
+            <label>Change Photo</label>
+            <input type="file" name="img"> 
+        </div>        
+    </div>
+    <div class="col-md-8">
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" name = "title" class="form-control" placeholder="Title" required autofocus value="<?php echo (isset($item)? $item['title'] : ''); ?>">
+        </div>
 
-  <form class="form-signin" role="form" action="add_modify_item.php" method="post">
-    <h2 class="form-signin-heading">Title</h2>
-    <input type="text" name = "title" class="form-control" placeholder="Title" required autofocus value="<?php echo (isset($item)? $item['title'] : ''); ?>">
-    <h2 class="form-signin-heading">Photo</h2>
-    <img src="img/noimg.jpg" alt="">
-    <h2 class="form-signin-heading">Select a file:</h2>
-    <input type="file" name="img"> 
-    <h2 class="form-signin-heading">Summary</h2>
-    <input type="text" name = "summary" class="form-control" placeholder="Summary" required value="<?php echo (isset($item)? $item['summary'] : ''); ?>">
-    <h2 class="form-signin-heading">Description</h2>
-    <input type="text" name = "description" class="form-control" placeholder="Description" required value="<?php echo (isset($item)? $item['description'] : ''); ?>">
+        <div class="form-group">
+            <label>Summary</label>
+            <input type="text" name = "summary" class="form-control" placeholder="Summary" required value="<?php echo (isset($item)? $item['summary'] : ''); ?>">
+        </div>
+        <div class="form-group">        
+            <label>Description</label>
+            <input type="text" name = "description" class="form-control" placeholder="Description" required value="<?php echo (isset($item)? $item['description'] : ''); ?>">
+        </div>
+        
+        <div class="form-group">
+            <label>Category</label>
+            <?php for($x = 0; $x < count($categories); $x++) {
+                $checked = false;
+                if (isset($all_tags)){
+                    $checked = in_array($categories[$x], $all_tags);
+                } 
+            
+            ?>            
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="ticked_categories[]" value="<?php echo $categories[$x]?>" <?= $checked ? 'checked' : '' ?>>
+                    <?php echo $categories[$x]?>
+                </label>
+            </div>
+            <?php } ?>
+        </div>  
 
-
-    <h2 class="form-signin-heading">Category</h2>
-
-    <?php for($x = 0; $x < count($categories); $x++) { ?>
-    <input type="checkbox" name= "ticked_categories[]" value= "<?php echo $categories[$x]?>" <?php
-    if (isset($all_tags)){
-      for($i = 0; $i < count($all_tags); $i++){
-        if( $categories[$x] == $all_tags[$i] ){
-          echo 'checked="checked"';
-        } 
-      }
-    }
-    ?> > <?php echo $categories[$x] ?> <br>
-
-    <?php } ?>
-
-
-    <h2 class="form-signin-heading">Condition</h2>
-    <input type="text" name = "condition" class="form-control" placeholder="Condition of item" required value="<?php echo (isset($item)? $item['cond'] : ''); ?>" >
+        <div class="form-group">        
+            <label>Condition</label>
+            <input type="text" name = "condition" class="form-control" placeholder="Condition of item" required value="<?php echo (isset($item)? $item['cond'] : ''); ?>" >
+        </div>    
 
 <!--
                   <div class="control-group">
@@ -217,34 +232,33 @@ include('header.php');
                       </div>
                     </div>
                   -->
-                  <h2 class="form-signin-heading">Price</h2>
-                  <input type="text" name = "price" class="form-control" placeholder="Price" required value="<?php echo (isset($item)? $item['price'] : ''); ?>">
-                  <br></br>
+        
+        <div class="form-group">        
+            <label>Price</label>
+            <input type="text" name = "price" class="form-control" placeholder="Price" required value="<?php echo (isset($item)? $item['price'] : '');?>">
+        </div>
+        
+        <?php
+            if(isset($item)){
+            ?>
+            <input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" value="Edit"/>
+            <input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
+            <?php
+            }else{
+            ?>
+            <input type = "submit" class="btn btn-primary pull-left" type="button" id="edit_btn" value="Post"/>
+            <?php
+            }
+        ?>
+                  
+    </div>
 
-                  <?php
-                  if(isset($item)){
-                    ?>
-                    <input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" value="Edit"/>
-                    <input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
-                    <?php
-                  }
-                  else{
-                    ?>
-                    <input type = "submit" class="btn btn-primary pull-left" type="button" id="edit_btn" value="Post"/>
-                    <?php
-                  }
-                  ?>
+</form>
 
-                </form>
+</div>
 
-                <br></br>
-                <br></br>
-                <br></br>
+<?php
 
-              </div>
+include('footer.php');
 
-              <?php
-
-              include('footer.php');
-
-              ?>
+?>
