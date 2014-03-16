@@ -70,7 +70,7 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 
 	//if it's not edit item, it is add item
 	else if(!isset($_POST['item_id'])){
-		echo "adding item";
+		//echo "adding item";
 		if ($stmt = $conn->prepare("INSERT INTO item (user, title, summary, description, cond, price, photo) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
 			
 			if (!isset($img_path)){
@@ -97,7 +97,7 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 
 				}
 				
-				$message = "Item has been posted. <a href=\"view_item.php?id=$item_index\">Click here to view your item listing</a>";
+				$message = "Item has been posted. <a href=\"view_item.php?id=$item_index\">Click here to view your item listing</a>.<br>You can use the page below to add another listing!";
 				
 			}else{
 				//echo $conn->error;
