@@ -77,7 +77,7 @@ include('header.php');
                 <div class="col-md-6">
                     <b>Sort By:</b>						
                     <!--ORDER BY-->
-                    <select name="orderby" style="width:200px;display:inline-block" class="form-control">
+                    <select name="orderby" style="width:200px;display:inline-block;" class="form-control">
                     <?php 
 
                         $orderby='';;
@@ -94,7 +94,7 @@ include('header.php');
                     </select>
 
                     <!--ORDER -->
-                    <select name="order" style="width:200px;display:inline-block" class="form-control">
+                    <select name="order" style="width:200px;display:inline-block;" class="form-control">
                     <?php 
                         $order=$_GET['order'];
                         $sel="selected";
@@ -109,7 +109,7 @@ include('header.php');
                 <div class="col-md-4">
                     <b>Filter Category:</b>
                     <!--FILTER BY CATEGORY-->
-                    <select name="cat" style="width:200px;display:inline-block"  class="form-control">
+                    <select name="cat" style="width:200px;display:inline-block;"  class="form-control">
                         <?php 
                         $catname="";
                         $sel="selected";
