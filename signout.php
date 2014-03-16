@@ -1,8 +1,6 @@
 <?php
 
-// Initialize the session.
-// If you are using session_name("something"), don't forget it now!
-session_start();
+include('common.php');
 
 // Unset all of the session variables.
 $_SESSION = array();
@@ -20,9 +18,6 @@ if (ini_get("session.use_cookies")) {
 // Finally, destroy the session.
 session_destroy();
 
-$host  = $_SERVER['HTTP_HOST'];
-$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-$extra = 'index.php';
-header("Location: http://$host$uri/$extra");
+redirectToPage('index.php');
 
 ?>

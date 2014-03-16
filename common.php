@@ -40,4 +40,11 @@ class BindParam{
     }
 }
 
+function redirectToPage($page){
+	$host  = $_SERVER['HTTP_HOST'];
+	$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+	$extra = $page;
+	header("Location: http://$host$uri/$extra");	
+}
+
 ?>
