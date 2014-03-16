@@ -16,41 +16,13 @@ if ($stmt = $conn->prepare("SELECT * FROM category")) {
   }
 }
 
-//if edit item - load up item
-if (isset($_GET['id'])){
-
-  if ($stmt = $conn->prepare("SELECT * FROM item WHERE id = ?")) {
-    $stmt->bind_param('i', $_GET['id']);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $item = $res->fetch_assoc();
-
-    if ($stmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
-      $stmt->bind_param('i', $_GET['id']);
-      $stmt->execute();
-      $res = $stmt->get_result();
-
-      $x = 0;
-      $all_tags = array();
-      while ( $tags = $res->fetch_assoc()) {
-        $all_tags[$x] =  (string) $tags['cat_name'];
-        //print_r($tags);
-        $x++;
-      }
-    }
-    echo $conn->error;
-
-  }
-
-}
-
 //if fields are set
-else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['description']) && isset($_POST['condition']) && isset($_POST['price']) ){
+if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['description']) && isset($_POST['condition']) && isset($_POST['price']) ){
   //echo "Fields are set";
   if($_POST['condition'] == "invalid"){
     //echo "condition invalid";
-    $message = "Please set the condition of the item";
-    echo "<script type='text/javascript'>alert('$message');</script>";
+    $err = "Please set the condition of the item";
+    //echo "<script type='text/javascript'>alert('$message');</script>";
        //repopulate
     $item = array("title"=>$_POST['title'],
       "summary"=>$_POST['summary'],
@@ -62,8 +34,8 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
   //if price is invalid field
   else if(!is_numeric($_POST['price'])){
     //echo "price invalid";
-    $message = "Price is invalid, only numbers are allowed. E.g 5.50";
-    echo "<script type='text/javascript'>alert('$message');</script>";
+    $err = "Price is invalid, only numbers are allowed. E.g 5.50";
+    //echo "<script type='text/javascript'>alert('$message');</script>";
        //repopulate
     $item = array("title"=>$_POST['title'],
       "summary"=>$_POST['summary'],
@@ -75,15 +47,15 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
   }
 
 //if it's not edit item, it is add item
-  else if(!isSet($_POST['item_id'])){
+  else if(!isset($_POST['item_id'])){
     //echo "adding item";
     if ($stmt = $conn->prepare("INSERT INTO item (user, title, summary, description, cond, price) VALUES (?, ?, ?, ?, ?, ?)")) {
 
       $stmt->bind_param('sssssd', $_SESSION["username"], $_POST['title'], $_POST['summary'], $_POST['description'], $_POST['condition'], $_POST['price']);
       $stmt->execute();
-      echo $conn->error;
-      $message = "Your entry has been posted";
-      echo "<script type='text/javascript'>alert('$message');</script>";
+      //$conn->error;
+      $message = "Item has been posted";
+      //echo "<script type='text/javascript'>alert('$message');</script>";
 
       //need to key in entries for tags / categories
       //get the index of the item that we just entered
@@ -101,15 +73,15 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
   }
 
   //if we're modifying an existing item
-  else if(isSet($_POST['item_id'])){
+  else if(isset($_POST['item_id'])){
     //echo "editing item";
     if ($stmt = $conn->prepare("UPDATE item set title = ?, summary = ?, description = ?, cond =?, price = ? where id = ? and user = ?")) {
 
       $stmt->bind_param('ssssdis', $_POST['title'], $_POST['summary'], $_POST['description'], $_POST['condition'], $_POST['price'], $_POST['item_id'], $_SESSION["username"] );
       $stmt->execute();
       echo $conn->error;
-      $message = "Your post has been updated";
-      echo "<script type='text/javascript'>alert('$message');</script>";
+      $message = "Item has been updated";
+      //echo "<script type='text/javascript'>alert('$message');</script>";
 
       //update if tags are updated
       //drop off all the old tags
@@ -160,6 +132,34 @@ else if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['des
   }
 }
 
+//if edit item - load up item
+if (isset($_GET['id'])){
+
+  if ($stmt = $conn->prepare("SELECT * FROM item WHERE id = ?")) {
+    $stmt->bind_param('i', $_GET['id']);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $item = $res->fetch_assoc();
+
+    if ($stmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
+      $stmt->bind_param('i', $_GET['id']);
+      $stmt->execute();
+      $res = $stmt->get_result();
+
+      $x = 0;
+      $all_tags = array();
+      while ( $tags = $res->fetch_assoc()) {
+        $all_tags[$x] =  (string) $tags['cat_name'];
+        //print_r($tags);
+        $x++;
+      }
+    }
+    echo $conn->error;
+
+  }
+
+}
+
 $page_title = 'CS2102 Classifieds - Add/Edit Item';
 include('header.php');
 ?>
@@ -168,7 +168,16 @@ include('header.php');
 
 <h1>Add/Edit Item</h1>
 
-<form role="form" action="add_modify_item.php" method="post">
+<form role="form" action="add_modify_item.php<?= isset($item) ? '?id='.$item['id'] : '' ?>" method="post">
+    <div class="row">
+        <?php if (isset($message)){ ?>
+        <div class="alert alert-success"><?= $message ?></div>
+        <?php } ?>
+        <?php if (isset($err)){ ?>
+        <div class="alert alert-danger"><?= $err ?></div>
+        <?php } ?>
+    </div>
+    <div class="row">
     <div class="col-md-4" style="padding-top:30px;">
         <div class="form-group">
             <img src="img/noimg.jpg" alt="">
@@ -251,6 +260,7 @@ include('header.php');
             }
         ?>
                   
+    </div>
     </div>
 
 </form>
