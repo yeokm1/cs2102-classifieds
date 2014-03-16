@@ -173,7 +173,7 @@ include('header.php');
         </div>
         <div class="form-group">        
             <label>Description</label>
-            <input type="text" name = "description" class="form-control" placeholder="Description" required value="<?php echo (isset($item)? $item['description'] : ''); ?>">
+            <textarea name="description" class="form-control" placeholder="Description" required><?php echo (isset($item)? $item['description'] : ''); ?></textarea>
         </div>
         
         <div class="form-group">
