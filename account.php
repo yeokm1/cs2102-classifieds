@@ -1,30 +1,10 @@
 <?php
-  include('common.php');
+  
+    include('common.php');
 
-  class BindParam{ 
-    private $values = array(), $types = ''; 
-    
-    public function add( $type, &$value ){ 
-        $this->values[] = $value; 
-        $this->types .= $type; 
-    } 
-    
-    public function get(){ 
-        return array_merge(array($this->types), $this->values); 
-    } 
-  }
+ 
 
-  function refValues($arr)
-  { 
-    $refs = array();
-
-    foreach ($arr as $key => $value)
-    {
-      $refs[$key] = &$arr[$key]; 
-    }
-
-    return $refs; 
-  }
+  
 
   function handleEdit(){
     global $conn;
@@ -77,7 +57,7 @@
       
       $stmt = $conn->prepare($build_stmt);
       echo $conn->error;
-      call_user_func_array(array($stmt, 'bind_param'), refValues($bindParam->get())); 
+      call_user_func_array(array($stmt, 'bind_param'), $bindParam->getRef()); 
           
       if ($stmt->execute()){
         $msg = 'Update successful!';
