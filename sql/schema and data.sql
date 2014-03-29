@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2014 at 08:32 AM
+-- Generation Time: Mar 29, 2014 at 08:49 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -72,6 +72,19 @@ INSERT INTO `item` (`id`, `user`, `title`, `summary`, `description`, `photo`, `c
 (3, 'mary', 'D24 durian', 'Best in Malaysia and Singapore', 'One crate of durians. ', NULL, 'Uneaten', 20, '2014-03-08 14:20:03'),
 (4, 'john', 'Ikea table', 'Glass table. 1 inch thick.', 'Comes in flat pack. Takes about 1 hour to assemble.', NULL, 'New', 100.4, '2014-03-08 14:22:01');
 
+--
+-- Triggers `item`
+--
+DROP TRIGGER IF EXISTS `positive_price`;
+DELIMITER //
+CREATE TRIGGER `positive_price` BEFORE INSERT ON `item`
+ FOR EACH ROW IF new.price < 0 THEN 
+  SIGNAL SQLSTATE '12345' 
+    SET MESSAGE_TEXT = 'Item price cannot be negative'; 
+END IF
+//
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -125,19 +138,6 @@ INSERT INTO `user` (`email`, `username`, `password`, `photo`, `gender`, `phone`,
 ('user1@email1.com', 'john', 'john', NULL, 'male', '75319024', '2014-03-08 14:10:29', 'user'),
 ('mary@mary.com', 'mary', 'mary', NULL, 'female', '1902446', '2014-03-08 14:12:22', 'user'),
 ('peter@email2.com', 'peter', 'peter', NULL, 'male', '864202', '2014-03-08 14:11:44', 'user');
-
---
--- Triggers `user`
---
-DROP TRIGGER IF EXISTS `username_no_space`;
-DELIMITER //
-CREATE TRIGGER `username_no_space` BEFORE INSERT ON `user`
- FOR EACH ROW IF new.username NOT REGEXP '^[[:alnum:]]+$' THEN 
-  SIGNAL SQLSTATE '12345' 
-    SET MESSAGE_TEXT = 'check constraint on username with no space failed'; 
-END IF
-//
-DELIMITER ;
 
 -- --------------------------------------------------------
 
