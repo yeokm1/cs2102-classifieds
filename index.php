@@ -1,7 +1,7 @@
 <?php
 include('common.php');
 
-$page_title = 'CS2102 Classfieds - Sign In';
+$page_title = 'CS2102 Classfieds - Home';
 $extra_head = <<<EOT
 <style type="text/css">
   body {
