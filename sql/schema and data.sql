@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2014 at 08:49 AM
+-- Generation Time: Mar 29, 2014 at 09:03 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -20,94 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `classifieds`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `category`
---
-
-CREATE TABLE IF NOT EXISTS `category` (
-  `name` varchar(32) NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `category`
---
-
-INSERT INTO `category` (`name`) VALUES
-('Fruits'),
-('Furniture'),
-('Household'),
-('Mobile Devices');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item`
---
-
-CREATE TABLE IF NOT EXISTS `item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user` varchar(32) NOT NULL,
-  `title` text NOT NULL,
-  `summary` text NOT NULL,
-  `description` text NOT NULL,
-  `photo` varchar(32) DEFAULT NULL,
-  `cond` varchar(64) NOT NULL,
-  `price` double NOT NULL,
-  `date_listed` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `item`
---
-
-INSERT INTO `item` (`id`, `user`, `title`, `summary`, `description`, `photo`, `cond`, `price`, `date_listed`) VALUES
-(1, 'john', 'Iphone 5s', 'Still rather new. Includes case.', 'Bought late last year.', NULL, 'Used but still good.', 599.99, '2014-03-08 14:16:06'),
-(2, 'john', 'Samsung Galaxy S5', 'Won in contest! Get this before anyone else!', 'Unopened. Comes with full accessories pack like charger and cable.', NULL, 'New', 1000, '2014-03-08 14:18:35'),
-(3, 'mary', 'D24 durian', 'Best in Malaysia and Singapore', 'One crate of durians. ', NULL, 'Uneaten', 20, '2014-03-08 14:20:03'),
-(4, 'john', 'Ikea table', 'Glass table. 1 inch thick.', 'Comes in flat pack. Takes about 1 hour to assemble.', NULL, 'New', 100.4, '2014-03-08 14:22:01');
-
---
--- Triggers `item`
---
-DROP TRIGGER IF EXISTS `positive_price`;
-DELIMITER //
-CREATE TRIGGER `positive_price` BEFORE INSERT ON `item`
- FOR EACH ROW IF new.price < 0 THEN 
-  SIGNAL SQLSTATE '12345' 
-    SET MESSAGE_TEXT = 'Item price cannot be negative'; 
-END IF
-//
-DELIMITER ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tagged`
---
-
-CREATE TABLE IF NOT EXISTS `tagged` (
-  `item_id` int(11) NOT NULL,
-  `cat_name` varchar(32) NOT NULL,
-  PRIMARY KEY (`item_id`,`cat_name`),
-  KEY `cat_name` (`cat_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tagged`
---
-
-INSERT INTO `tagged` (`item_id`, `cat_name`) VALUES
-(3, 'Fruits'),
-(4, 'Furniture'),
-(4, 'Household'),
-(1, 'Mobile Devices'),
-(2, 'Mobile Devices');
 
 -- --------------------------------------------------------
 
@@ -139,53 +51,18 @@ INSERT INTO `user` (`email`, `username`, `password`, `photo`, `gender`, `phone`,
 ('mary@mary.com', 'mary', 'mary', NULL, 'female', '1902446', '2014-03-08 14:12:22', 'user'),
 ('peter@email2.com', 'peter', 'peter', NULL, 'male', '864202', '2014-03-08 14:11:44', 'user');
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `views`
+-- Triggers `user`
 --
-
-CREATE TABLE IF NOT EXISTS `views` (
-  `item_id` int(11) NOT NULL,
-  `user_id` varchar(32) NOT NULL,
-  `view_date` datetime NOT NULL,
-  PRIMARY KEY (`item_id`,`user_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `views`
---
-
-INSERT INTO `views` (`item_id`, `user_id`, `view_date`) VALUES
-(2, 'david', '2014-03-06 14:11:44'),
-(2, 'john', '2014-03-07 14:11:44'),
-(3, 'david', '2014-03-07 14:11:44'),
-(4, 'mary', '2014-03-08 14:11:44');
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `item`
---
-ALTER TABLE `item`
-  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `tagged`
---
-ALTER TABLE `tagged`
-  ADD CONSTRAINT `tagged_ibfk_1` FOREIGN KEY (`cat_name`) REFERENCES `category` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tagged_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `views`
---
-ALTER TABLE `views`
-  ADD CONSTRAINT `views_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `views_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+DROP TRIGGER IF EXISTS `username_no_space`;
+DELIMITER //
+CREATE TRIGGER `username_no_space` BEFORE INSERT ON `user`
+ FOR EACH ROW IF new.username NOT REGEXP '^[[:alnum:]]+$' THEN 
+  SIGNAL SQLSTATE '12345' 
+    SET MESSAGE_TEXT = 'check constraint on username with no space failed'; 
+END IF
+//
+DELIMITER ;
 SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
