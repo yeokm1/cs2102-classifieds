@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2014 at 09:05 AM
+-- Generation Time: Mar 29, 2014 at 10:38 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -147,7 +147,7 @@ DELIMITER //
 CREATE TRIGGER `username_no_space` BEFORE INSERT ON `user`
  FOR EACH ROW IF new.username NOT REGEXP '^[[:alnum:]]+$' THEN 
   SIGNAL SQLSTATE '12345' 
-    SET MESSAGE_TEXT = 'check constraint on username with no space failed'; 
+    SET MESSAGE_TEXT = 'Username must be alphanumeric only with no spaces.'; 
 END IF
 //
 DELIMITER ;

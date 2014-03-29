@@ -105,13 +105,13 @@ CREATE TABLE IF NOT EXISTS `views` (
 
 -- Trigger to disallow space in username
 
-DROP TRIGGER IF EXISTS `positive_price`;
+DROP TRIGGER IF EXISTS `username_no_space`;
 DELIMITER //
 CREATE TRIGGER `username_no_space` 
 BEFORE INSERT ON `user` FOR EACH ROW 
 IF new.username NOT REGEXP '^[[:alnum:]]+$' THEN 
   SIGNAL SQLSTATE '12345' 
-    SET MESSAGE_TEXT = 'check constraint on username with no space failed'; 
+    SET MESSAGE_TEXT = 'Username must be alphanumeric only with no spaces.'; 
 END IF
 //
 DELIMITER ;
