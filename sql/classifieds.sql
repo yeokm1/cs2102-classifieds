@@ -105,20 +105,25 @@ CREATE TABLE IF NOT EXISTS `views` (
 
 -- Trigger to disallow space in username
 
-DELIMITER ;
+DROP TRIGGER IF EXISTS `positive_price`;
+DELIMITER //
 CREATE TRIGGER `username_no_space` 
 BEFORE INSERT ON `user` FOR EACH ROW 
 IF new.username NOT REGEXP '^[[:alnum:]]+$' THEN 
   SIGNAL SQLSTATE '12345' 
-    SET MESSAGE_TEXT = 'No spaces allowed in username'; 
+    SET MESSAGE_TEXT = 'check constraint on username with no space failed'; 
 END IF
-
-
+//
 DELIMITER ;
-CREATE TRIGGER `positive_price` 
-BEFORE INSERT ON `item` FOR EACH ROW 
-IF new.price < 0 THEN 
+
+
+DROP TRIGGER IF EXISTS `positive_price`;
+DELIMITER //
+CREATE TRIGGER `positive_price` BEFORE INSERT ON `item`
+ FOR EACH ROW IF new.price < 0 THEN 
   SIGNAL SQLSTATE '12345' 
     SET MESSAGE_TEXT = 'Item price cannot be negative'; 
 END IF
+//
+DELIMITER ;
 

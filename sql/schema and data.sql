@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2014 at 08:49 AM
+-- Generation Time: Mar 29, 2014 at 09:05 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -138,6 +138,19 @@ INSERT INTO `user` (`email`, `username`, `password`, `photo`, `gender`, `phone`,
 ('user1@email1.com', 'john', 'john', NULL, 'male', '75319024', '2014-03-08 14:10:29', 'user'),
 ('mary@mary.com', 'mary', 'mary', NULL, 'female', '1902446', '2014-03-08 14:12:22', 'user'),
 ('peter@email2.com', 'peter', 'peter', NULL, 'male', '864202', '2014-03-08 14:11:44', 'user');
+
+--
+-- Triggers `user`
+--
+DROP TRIGGER IF EXISTS `username_no_space`;
+DELIMITER //
+CREATE TRIGGER `username_no_space` BEFORE INSERT ON `user`
+ FOR EACH ROW IF new.username NOT REGEXP '^[[:alnum:]]+$' THEN 
+  SIGNAL SQLSTATE '12345' 
+    SET MESSAGE_TEXT = 'check constraint on username with no space failed'; 
+END IF
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
