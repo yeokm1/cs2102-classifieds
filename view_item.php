@@ -101,7 +101,7 @@ include('header.php');
 				<dd><?php echo $item['price'] ?></dd>
 				<dt>Categories</dt>
 				<dd>
-				 <?php if ($itemCatStmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
+				<?php if ($itemCatStmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
 						  $itemCatStmt->bind_param('i', $item['id']);
 						  $itemCatStmt->execute();
 						  $itemCatRes = $itemCatStmt->get_result();
@@ -113,6 +113,44 @@ include('header.php');
 						  echo (implode (", " , $itemCatAll ));?>	</dd>		
 				</dl>
 			</div>
+		</div>
+		<div class="row">
+			
+<!--
+SELECT COUNT(v2.item_id) AS count, v2.item_id FROM views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> 10 AND v2.user_id <> 'john' GROUP BY v2.item_id ORDER BY count DESC
+
+SELECT * FROM item WHERE id in (
+SELECT COUNT(v2.item_id) AS count, v2.item_id FROM views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> 10 AND v2.user_id <> 'john' GROUP BY v2.item_id ORDER BY count DESC
+)
+
+SELECT * FROM item WHERE id in (
+SELECT v2.item_id FROM views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> ? AND v2.user_id <> ? GROUP BY v2.item_id ORDER BY COUNT(v2.item_id) DESC LIMIT 0, 10
+)
+-->
+			
+			<h3>Users who viewed this item also viewed:</h3>
+			<?php if ($relatedItemsStmt = $conn->prepare('
+SELECT i.title, i.photo, i.id, COUNT(v2.item_id) as count FROM item i, views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> ? AND v2.user_id <> ? AND i.id = v2.item_id GROUP BY v2.item_id ORDER BY count DESC LIMIT 0, 6
+			')) {
+					$relatedItemsStmt->bind_param('is', $item['id'], $_SESSION['username']);
+					$relatedItemsStmt->execute();
+					$relatedItemsRes = $relatedItemsStmt->get_result();
+					while($relItem = $relatedItemsRes ->fetch_assoc()){
+						$itemphoto='img/noimg.jpg';
+						if($relItem['photo']!= NULL) 
+							$itemphoto='content/item/'.$relItem['photo'];
+						?>
+						<div class="col-md-2">
+							<a href="view_item.php?id=<?= $relItem['id']; ?>" title="<?= $relItem['count']; ?> other user<?= $relItem['count'] > 1 ? 's' : '' ?> viewed this item">
+								<img src="<?= $itemphoto; ?>" style="max-width:150px;max-height:200px;">
+								<?= $relItem['title']; ?>
+							</a>
+						</div>							
+						<?php
+					}
+				}
+				//var_dump ($conn->error);
+			?>
 		</div>
 	</div>
 	 <?php } ?> 
