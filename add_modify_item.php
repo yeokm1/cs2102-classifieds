@@ -55,9 +55,9 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 			);
 	}
 	//if price is invalid field
-	else if(!is_numeric($_POST['price'])){
+	else if(!is_numeric($_POST['price']) || $_POST['price'] < 0){
 		//echo "price invalid";
-		$err = "Price is invalid, only numbers are allowed. E.g 5.50";
+		$err = "Price is invalid, only positive numbers are allowed. E.g 5.50";
 		//repopulate
 		$item = array("title"=>$_POST['title'],
 			"summary"=>$_POST['summary'],
@@ -334,7 +334,7 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 </div>
 
 <?php
-if(isset($item) && ( ( isset($_SESSION['username']) && $item['user'] == $_SESSION['username']) || (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') ) ){
+if(isset($item) &&  isset($item['user']) && ( ( isset($_SESSION['username']) && $item['user'] == $_SESSION['username']) || (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') ) ){
 	?>
 	<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" name = 'Edit' value="Edit"/>
 	<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
