@@ -61,7 +61,7 @@
 		$sql=$sql." ORDER BY i.date_listed DESC";
 	}
 
-	echo($sql);
+	//echo($sql);
 
 	if($stmt = $conn->prepare($sql) ){
 		$stmt->execute();
@@ -117,11 +117,11 @@ include('header.php');
 						} ?>>
 						
 						
-					<label>Sort By </label>					
+					<label>&nbsp;&nbsp;&nbsp;Sort By </label>					
 					<!--ORDER BY-->
 					<select name="orderby" style="width:150px;display:inline-block;" class="form-control">
-						<option value="" <?php if($orderby == "") echo $sel ?>>--</option>	
-						<option value="date_listed" <?php if (($orderby === 'date_listed') OR ($orderby === '')) echo $sel; ?>>Date Listed</option>
+						<option value="" <?php if($orderby == '') echo $sel ?>>--</option>	
+						<option value="date_listed" <?php if (($orderby === 'date_listed')) echo $sel; ?>>Date Listed</option>
 						<option value="title" <?php if ($orderby === 'title') echo $sel; ?>>Title</option>
 						<option value="price" <?php if ($orderby === 'price') echo $sel; ?>>Price</option>
 						<option value="cond" <?php if ($orderby === 'cond') echo $sel; ?>>Condition</option>
@@ -130,12 +130,12 @@ include('header.php');
 					<!--ORDER -->
 					<select name="order" style="width:150px;display:inline-block;" class="form-control">
 						<option value="" <?php if($order == "") echo $sel ?>>--</option>	
-						<option value="DESC" <?php if (($order === 'DESC') OR ($order === '')) echo $sel; ?>>Descending</option>
+						<option value="DESC" <?php if (($order === 'DESC')) echo $sel; ?>>Descending</option>
 						<option value="ASC" <?php if ($order === 'ASC') echo $sel; ?>>Ascending</option>					
 					</select>
 				</div>
 				<div class="form-group">
-					<label> Filter Category </label>	
+					<label>&nbsp;&nbsp;&nbsp;Filter Category </label>	
 					<!--FILTER BY CATEGORY-->
 					<select name="cat" style="width:200px;display:inline-block;"  class="form-control">
 							<?php
