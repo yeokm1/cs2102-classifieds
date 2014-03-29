@@ -103,6 +103,14 @@ CREATE TABLE IF NOT EXISTS `views` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- Trigger to disallow space in username
+
+DELIMITER ;
+CREATE TRIGGER `username_no_space` 
+BEFORE INSERT ON `user` FOR EACH ROW 
+IF new.username NOT REGEXP '^[[:alnum:]]+$' THEN 
+  SIGNAL SQLSTATE '12345' 
+    SET MESSAGE_TEXT = 'check constraint on username with no space failed'; 
+END IF
+
+
