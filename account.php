@@ -2,14 +2,10 @@
   
     include('common.php');
 
- 
-
-  
-
   function handleEdit(){
     global $conn;
     
-    if ($_POST['username'] == $_SESSION['username']){
+    if ($_POST['username'] == $_SESSION['username'] || $_SESSION['role'] == "admin"){
       $stmt = null;
       
       //print_r($_POST);
@@ -52,6 +48,7 @@
         $bindParam->add('s', $photo_path);
       }
       
+
       $build_stmt .= ' WHERE username = ?';
       $bindParam->add('s', $_POST['username']);
       
@@ -106,7 +103,18 @@
 
   $editMode = false;
 
-  if (isset($_SESSION['username'])){
+  if(isset($_GET['id'])) {
+    if($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
+      $stmt->bind_param('s', $_GET['id']);
+      $stmt->execute();
+      $res = $stmt->get_result();
+
+      if($res->num_rows == 1) {
+        $editMode = true;
+        $row = $res->fetch_assoc();
+      } #else ignored
+    }
+  } else if (isset($_SESSION['username'])){
     // User is logged in
     if ($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
       $stmt->bind_param('s', $_SESSION['username']);

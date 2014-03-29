@@ -65,8 +65,8 @@ include('header.php');
 					 ?>
 					 
 
-						<FORM action="add_modify_item.php">
-							<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+						<FORM action="account.php">
+							<input type="hidden" name="id" value="<?php echo $user['username'] ?>">
 							<INPUT type=submit style=" vertical-align: middle;" value="Edit profile" class="btn" >
 						</FORM>
 					<br>					
