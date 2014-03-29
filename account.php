@@ -103,7 +103,18 @@
 
   $editMode = false;
 
-  if(isset($_GET['id'])) {
+  if(isset($_POST['username'])) {
+    if($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
+      $stmt->bind_param('s', $_POST['username']);
+      $stmt->execute();
+      $res = $stmt->get_result();
+
+      if($res->num_rows == 1) {
+        $editMode = true;
+        $row = $res->fetch_assoc();
+      } #else ignored
+    }
+  } else if(isset($_GET['id'])) {
     if($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
       $stmt->bind_param('s', $_GET['id']);
       $stmt->execute();
