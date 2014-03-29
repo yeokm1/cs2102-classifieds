@@ -177,10 +177,10 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 		if(isset($_POST['Delete'])){
 
 			if ($stmt = $conn->prepare("SELECT * FROM item WHERE id = ?")) {
-			$stmt->bind_param('i', $_GET['id']);
-			$stmt->execute();
-			$res = $stmt->get_result();
-			$item = $res->fetch_assoc();
+				$stmt->bind_param('i', $_GET['id']);
+				$stmt->execute();
+				$res = $stmt->get_result();
+				$item = $res->fetch_assoc();
 			}
 
 			if(!isset($item['user']))
@@ -336,16 +336,25 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 <?php
 if(isset($item) &&  isset($item['user']) && ( ( isset($_SESSION['username']) && $item['user'] == $_SESSION['username']) || (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') ) ){
 	?>
-	<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" name = 'Edit' value="Edit"/>
-	<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
 
-	<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" name = 'Delete' value="Delete"/>
-	<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
+	<div class = form-group>
+
+		<div class="col-md-1">
+			<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" name = 'Edit' value="Edit"/>
+			<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
+		</div>
+
+		<div class="col-md-1">
+			<input type = "submit" class="btn btn-danger pull-left" type="button" id="post_btn" name = 'Delete' value="Delete"/>
+			<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
+		</div>
+
+	</div>
 
 	<?php
 }else{
 	?>
-	<input type = "submit" class="btn btn-primary pull-left" type="button" id="edit_btn" value="Post"/>
+	<input type = "submit" class="btn btn-success pull-left" type="button" id="edit_btn" value="Post"/>
 	<?php
 }
 ?>
