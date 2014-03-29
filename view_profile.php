@@ -57,6 +57,8 @@ include('header.php');
 						
 					?>
 						<FORM action="account.php">
+													<input type="hidden" name="id" value="<?php echo $user['username'] ?>">
+
 							<INPUT type=submit style=" vertical-align: middle;" value="Edit your profile" class="btn btn-primary" >
 						</FORM>
 					<br>
