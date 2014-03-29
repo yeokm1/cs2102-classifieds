@@ -33,7 +33,7 @@ SELECT i.title, i.photo, i.id, COUNT(v.item_id) as count FROM item i, views v WH
 						?>
 						<div class="col-md-2">
 							<a href="view_item.php?id=<?= $hotItem['id']; ?>" title="<?= $hotItem['count']; ?> other user<?= $relItem['count'] > 1 ? 's' : '' ?> viewed this item">
-								<div><img src="<?= $itemphoto; ?>" style="max-width:150px;max-height:200px;"></div>
+								<div style="text-align:center;"><img src="<?= $itemphoto; ?>" style="max-width:150px;max-height:200px;"></div>
 								<div style="text-align:center;"><?= $hotItem['title']; ?></div>
 							</a>
 						</div>							
@@ -61,33 +61,47 @@ SELECT i.title, i.photo, i.id, COUNT(v.item_id) as count FROM item i, views v WH
 					if($latestItem['photo']!= NULL) 
 						$itemphoto='content/item/'.$latestItem['photo'];
 					?>
-					<div class="col-md-4">
-						<h3><?= $latestItem['title']; ?></h3>
-						<p><img src="<?= $itemphoto; ?>" style="max-width:200px;max-height:200px;"></p>
+					<div class="col-md-2">
+						<h4><?= $latestItem['title']; ?></h4>
+						<p><img src="<?= $itemphoto; ?>" style="max-width:150px;max-height:200px;"></p>
 						<p><?= $latestItem['summary']; ?></p>
-						<p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+						<p><a class="btn btn-default" href="view_item.php?id=<?= $latestItem['id'] ?>" role="button">View details &raquo;</a></p>
 					</div>							
 					<?php
 				}
 			}
 			//var_dump ($conn->error);
 		?>
-		<div class="col-md-4">
-			<h3>Heading</h3>
-			<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-			<p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-		</div>
-		<div class="col-md-4">
-			<h3>Heading</h3>
-			<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-			<p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-		</div>
-		<div class="col-md-4">
-			<h3>Heading</h3>
-			<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-			<p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-		</div>
 	</div> <!-- /container -->
+	
+	<?php
+	if (isset($_SESSION['username'])){
+	?>
+	<div class="row">
+		<h2>Recently Viewed Items</h2>
+		<?php if ($recentItemsStmt = $conn->prepare('SELECT i.title, i.photo, i.id, i.summary FROM item i, views v WHERE v.user_id = ? AND i.id = v.item_id ORDER BY v.view_date LIMIT 0, 6')) {
+				$recentItemsStmt->bind_param('s', $_SESSION['username']);
+				$recentItemsStmt->execute();
+				$recentItemsRes = $recentItemsStmt->get_result();
+				while($recentItem = $recentItemsRes ->fetch_assoc()){
+					$itemphoto='img/noimg.jpg';
+					if($recentItem['photo']!= NULL) 
+						$itemphoto='content/item/'.$recentItem['photo'];
+					?>
+					<div class="col-md-2">
+						<h4><?= $recentItem['title']; ?></h4>
+						<p><img src="<?= $itemphoto; ?>" style="max-width:150px;max-height:200px;"></p>
+						<p><?= $recentItem['summary']; ?></p>
+						<p><a class="btn btn-default" href="view_item.php?id=<?= $recentItem['id'] ?>" role="button">View details &raquo;</a></p>
+					</div>							
+					<?php
+				}
+			}
+		?>		
+	</div> <!-- /container -->
+	<?php
+	}
+	?>
 
 	<?php
 include('footer.php');
