@@ -38,21 +38,21 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 		// if the image is NOT submitted, or, if the image is submitted and uploaded correctly
 		$err = $img_err;
 		$item = array("title"=>$_POST['title'],
-      		"summary"=>$_POST['summary'],
-      		"description"=>$_POST['description'],
-      		"cond"=>$_POST['condition'],
-      		"price"=>$_POST['price']
-      	);
+			"summary"=>$_POST['summary'],
+			"description"=>$_POST['description'],
+			"cond"=>$_POST['condition'],
+			"price"=>$_POST['price']
+			);
 	}
 	else if($_POST['condition'] == "invalid"){
 		//echo "condition invalid";
 		$err = "Please set the condition of the item";
 		$item = array("title"=>$_POST['title'],
-      		"summary"=>$_POST['summary'],
-      		"description"=>$_POST['description'],
-      		"cond"=>$_POST['condition'],
-      		"price"=>$_POST['price']
-      	);
+			"summary"=>$_POST['summary'],
+			"description"=>$_POST['description'],
+			"cond"=>$_POST['condition'],
+			"price"=>$_POST['price']
+			);
 	}
 	//if price is invalid field
 	else if(!is_numeric($_POST['price'])){
@@ -60,11 +60,11 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 		$err = "Price is invalid, only numbers are allowed. E.g 5.50";
 		//repopulate
 		$item = array("title"=>$_POST['title'],
-      		"summary"=>$_POST['summary'],
-      		"description"=>$_POST['description'],
-      		"cond"=>$_POST['condition'],
-      		"price"=>$_POST['price']
-      	);
+			"summary"=>$_POST['summary'],
+			"description"=>$_POST['description'],
+			"cond"=>$_POST['condition'],
+			"price"=>$_POST['price']
+			);
 
 	}
 
@@ -130,8 +130,16 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 
 			$build_stmt .= ' where id = ? and user = ?';
 			$bindParam->add('s', $_POST['item_id']);
-			$bindParam->add('s', $_SESSION["username"]);
 
+			//check if admin, fill in with the poster's username
+			if($_SESSION['role'] == 'admin'){
+				//since he is admin, he can modify the post
+				$bindParam->add('s', $item['user']);
+			}
+			else{
+				//if username is same as poster username, the sql command will not permit it
+				$bindParam->add('s', $_SESSION["username"]);
+			}
 			$stmt = $conn->prepare($build_stmt);
 			echo $conn->error;
 			call_user_func_array(array($stmt, 'bind_param'), $bindParam->getRef()); 
@@ -162,7 +170,18 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 		}
 
 	}
-}
+
+	// deletion of item?
+	if(isset($_POST['Delete'])){
+		if($item['user'] == $_SESSION['username'] || $_SESSION['role'] == 'admin' ){}
+			if ($stmt = $conn->prepare("DELETE FROM item where id = ?")) {
+				$stmt->bind_param('i', $item['id']);
+				$stmt->execute();
+				echo $conn->error;
+			}
+		}
+	}
+
 
 //if edit item - load up item
 if (isset($_GET['id'])){
@@ -198,7 +217,12 @@ include('header.php');
 
 <div class="container" style="margin-bottom:50px;">
 
-	<h1>Add/Edit Item</h1>
+	<?php if(isset($item)){?>
+	<h1>Edit Item</h1>
+	<?php } else {?>
+	<h1>Add Item</h1>
+	<?php } ?>
+
 
 	<form role="form" action="add_modify_item.php<?= isset($item) ? '?id='.$item['id'] : '' ?>" method="post" enctype="multipart/form-data">
 		<div class="row">
@@ -250,20 +274,20 @@ include('header.php');
 							$checked = in_array($categories[$x], $all_tags);
 						} 
 
-					?>            
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" name="ticked_categories[]" value="<?php echo $categories[$x]?>" <?= $checked ? 'checked' : '' ?>>
-							<?php echo $categories[$x]?>
-						</label>
-					</div>
-					<?php } ?>
-				</div>  
+						?>            
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="ticked_categories[]" value="<?php echo $categories[$x]?>" <?= $checked ? 'checked' : '' ?>>
+								<?php echo $categories[$x]?>
+							</label>
+						</div>
+						<?php } ?>
+					</div>  
 
-				<div class="form-group">        
-					<label>Condition</label>
-					<input type="text" name = "condition" class="form-control" placeholder="Condition of item" required value="<?php echo (isset($item)? $item['cond'] : ''); ?>" >
-				</div>    
+					<div class="form-group">        
+						<label>Condition</label>
+						<input type="text" name = "condition" class="form-control" placeholder="Condition of item" required value="<?php echo (isset($item)? $item['cond'] : ''); ?>" >
+					</div>    
 
 				<!--
 <div class="control-group">
@@ -282,28 +306,32 @@ include('header.php');
 </div>
 -->
 
-				<div class="form-group">        
-					<label>Price</label>
-					<input type="text" name = "price" class="form-control" placeholder="Price" required value="<?php echo (isset($item)? $item['price'] : '');?>">
-				</div>
+<div class="form-group">        
+	<label>Price</label>
+	<input type="text" name = "price" class="form-control" placeholder="Price" required value="<?php echo (isset($item)? $item['price'] : '');?>">
+</div>
 
-				<?php
-					if(isset($item)){
-				?>
-				<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" value="Edit"/>
-				<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
-				<?php
-					}else{
-				?>
-				<input type = "submit" class="btn btn-primary pull-left" type="button" id="edit_btn" value="Post"/>
-				<?php
-					}
-				?>
+<?php
+if(isset($item) && ( ( isset($_SESSION['username']) && $item['user'] == $_SESSION['username']) || (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') ) ){
+	?>
+	<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" value="Edit"/>
+	<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
 
-			</div>
-		</div>
+	<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" value="Delete"/>
+	<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
 
-	</form>
+	<?php
+}else{
+	?>
+	<input type = "submit" class="btn btn-primary pull-left" type="button" id="edit_btn" value="Post"/>
+	<?php
+}
+?>
+
+</div>
+</div>
+
+</form>
 
 </div>
 
