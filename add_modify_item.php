@@ -129,16 +129,15 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 					$bindParam->add('s', $img_path);	
 				}
 
-				$build_stmt .= ' where id = ? and user = ?';
+				$build_stmt .= ' where id = ?';
 				$bindParam->add('s', $_POST['item_id']);
 
 			//check if admin, fill in with the poster's username
 				if($_SESSION['role'] == 'admin'){
-				//since he is admin, he can modify the post
-					$bindParam->add('s', $item['user']);
 				}
 				else{
 				//if username is same as poster username, the sql command will not permit it
+					$build_stmt .= ' and user = ?';
 					$bindParam->add('s', $_SESSION["username"]);
 				}
 				$stmt = $conn->prepare($build_stmt);
