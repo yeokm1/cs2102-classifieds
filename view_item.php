@@ -52,23 +52,23 @@ include('header.php');
 			<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
 			<INPUT type=submit style=" vertical-align: middle;" value="Edit your own item" class="btn btn-primary" >
 		</FORM>
-		<br>
 
 		<?php
-		} else if($_SESSION['role'] == "admin"){
+		} else if(isset($_SESSION['role'] && $_SESSION['role'] == "admin"){
 		?>
 
 
 		<FORM action="add_modify_item.php">
 			<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-			<INPUT type=submit style=" vertical-align: middle;" value="Edit item" class="btn" >
+			<INPUT type=submit style=" vertical-align: middle;" value="Edit item" class="btn btn-primary" >
 		</FORM>
-		<br>					
+					
 
 		<?php
 		}
 		?>
 		
+		<br>
 		<div class="row">
 			<div class="col-md-4" style="padding-top:30px;">
 				

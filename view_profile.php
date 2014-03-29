@@ -61,7 +61,7 @@ include('header.php');
 						</FORM>
 					<br>
 					<?php
-						} else if($_SESSION['role'] == "admin"){
+						} else if(isset($_SESSION['role']) && $_SESSION['role'] == "admin"){
 					 ?>
 					 
 
