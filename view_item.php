@@ -54,7 +54,7 @@ include('header.php');
 		</FORM>
 
 		<?php
-		} else if(isset($_SESSION['role'] && $_SESSION['role'] == "admin"){
+		} else if(isset($_SESSION['role']) && $_SESSION['role'] == "admin"){
 		?>
 
 
