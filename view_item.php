@@ -42,44 +42,36 @@ include('header.php');
 	<?php
 	    }
 		else{
-     ?>
+	?>
 	  
-   <div class="table-responsive">
-		<table class="table table-striped">
-			<tr>
-				<td colspan="2"> <div class="container-fluid ">
-					<h1 style="float: left;padding-right:10px;">Viewing Item:  <?php echo $item['title'] ?></h1>
-					&nbsp;
-					  <?php 
-						if(isset($_SESSION['username']) && $item['user']==$_SESSION['username']){
-						
-					?>
-						<FORM action="add_modify_item.php">
-							<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-							<INPUT type=submit style=" vertical-align: middle;" value="Edit your own item" class="btn btn-primary" >
-						</FORM>
-					<br>
-					
-					<?php
-						} else if($_SESSION['role'] == "admin"){
-					 ?>
-					 
+		<h1>Viewing Item:  <?php echo $item['title'] ?></h1>
+		<?php 
+			if(isset($_SESSION['username']) && $item['user']==$_SESSION['username']){
+		?>
+		<FORM action="add_modify_item.php">
+			<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+			<INPUT type=submit style=" vertical-align: middle;" value="Edit your own item" class="btn btn-primary" >
+		</FORM>
+		<br>
 
-						<FORM action="add_modify_item.php">
-							<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-							<INPUT type=submit style=" vertical-align: middle;" value="Edit item" class="btn" >
-						</FORM>
-					<br>					
-					
-					<?php
-						}
-					 ?>
-				</td>
+		<?php
+		} else if($_SESSION['role'] == "admin"){
+		?>
 
-			</tr>
+
+		<FORM action="add_modify_item.php">
+			<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+			<INPUT type=submit style=" vertical-align: middle;" value="Edit item" class="btn" >
+		</FORM>
+		<br>					
+
+		<?php
+		}
+		?>
+		
+		<div class="row">
+			<div class="col-md-4" style="padding-top:30px;">
 				
-			<tr>
-			<td width="30%">
 				<?php 
 				$itemphoto='img/noimg.jpg';
 				if($item['photo']!= NULL) 
@@ -91,27 +83,25 @@ include('header.php');
 					<img src="<?php echo $itemphoto ?>" class="img-thumbnail" style="max-width:500px">
 					
 					</center>
-				</td>
-				<td>
-					<div class="container-fluid ">
-	  
-					<dl>
-					<dt><h3 class="form-signin-heading">Posted by:</h3></dt>
-					<dd><a href="view_profile.php?username=<?php echo $item['user'] ?>">
-					<dd><?php echo $item['user'] ?></a></dd>					
-					<dt><h3 class="form-signin-heading">Date Listed</h3></dt>
-					<dd><?php echo $item['date_listed'] ?></dd>
-					<dt><h3 class="form-signin-heading">Summary</h3></dt>
-					<dd><?php echo $item['summary'] ?></dd>
-					<dt><h3 class="form-signin-heading">Description</h3></dt>
-					<dd><?php echo $item['description'] ?></dd>
-					<dt><h3 class="form-signin-heading">Condition</h3></dt>
-					<dd><?php echo $item['cond'] ?></dd>
-					<dt><h3 class="form-signin-heading">Price</h3></dt>
-					<dd><?php echo $item['price'] ?></dd>
-					<dt><h3 class="form-signin-heading">Categories</h3></dt>
-					<dd>
-				 <?php if ($itemCatStmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
+			</div>
+			<div class="col-md-8">	  
+				<dl>
+				<dt>Posted by:</dt>
+				<dd><a href="view_profile.php?username=<?php echo $item['user'] ?>">
+				<dd><?php echo $item['user'] ?></a></dd>					
+				<dt>Date Listed</dt>
+				<dd><?php echo $item['date_listed'] ?></dd>
+				<dt>Summary</dt>
+				<dd><?php echo $item['summary'] ?></dd>
+				<dt>Description</dt>
+				<dd><?php echo $item['description'] ?></dd>
+				<dt>Condition</dt>
+				<dd><?php echo $item['cond'] ?></dd>
+				<dt>Price</dt>
+				<dd><?php echo $item['price'] ?></dd>
+				<dt>Categories</dt>
+				<dd>
+				<?php if ($itemCatStmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {
 						  $itemCatStmt->bind_param('i', $item['id']);
 						  $itemCatStmt->execute();
 						  $itemCatRes = $itemCatStmt->get_result();
@@ -121,11 +111,48 @@ include('header.php');
 							  }
 						  }
 						  echo (implode (", " , $itemCatAll ));?>	</dd>		
-					</dl>
-					</div>
-				</td>
-			</tr>
-		</table>
+				</dl>
+			</div>
+		</div>
+		<div class="row">
+			
+<!--
+SELECT COUNT(v2.item_id) AS count, v2.item_id FROM views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> 10 AND v2.user_id <> 'john' GROUP BY v2.item_id ORDER BY count DESC
+
+SELECT * FROM item WHERE id in (
+SELECT COUNT(v2.item_id) AS count, v2.item_id FROM views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> 10 AND v2.user_id <> 'john' GROUP BY v2.item_id ORDER BY count DESC
+)
+
+SELECT * FROM item WHERE id in (
+SELECT v2.item_id FROM views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> ? AND v2.user_id <> ? GROUP BY v2.item_id ORDER BY COUNT(v2.item_id) DESC LIMIT 0, 10
+)
+-->
+			
+			<h3>Users who viewed this item also viewed:</h3>
+			<?php if ($relatedItemsStmt = $conn->prepare('
+SELECT i.title, i.photo, i.id, COUNT(v2.item_id) as count FROM item i, views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> ? AND v2.user_id <> ? AND i.id = v2.item_id GROUP BY v2.item_id ORDER BY count DESC LIMIT 0, 6
+			')) {
+					$relatedItemsStmt->bind_param('is', $item['id'], $_SESSION['username']);
+					$relatedItemsStmt->execute();
+					$relatedItemsRes = $relatedItemsStmt->get_result();
+					while($relItem = $relatedItemsRes ->fetch_assoc()){
+						$itemphoto='img/noimg.jpg';
+						if($relItem['photo']!= NULL) 
+							$itemphoto='content/item/'.$relItem['photo'];
+						?>
+						<div class="col-md-2">
+							<a href="view_item.php?id=<?= $relItem['id']; ?>" title="<?= $relItem['count']; ?> other user<?= $relItem['count'] > 1 ? 's' : '' ?> viewed this item">
+								<img src="<?= $itemphoto; ?>" style="max-width:150px;max-height:200px;">
+								<?= $relItem['title']; ?>
+							</a>
+						</div>							
+						<?php
+					}
+				}
+				//var_dump ($conn->error);
+			?>
+		</div>
+	</div>
 	 <?php } ?> 
 
 <?php
