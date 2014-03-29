@@ -1,22 +1,30 @@
 <?php
-	include('common.php');
+include('common.php');
 
-	if (isset($_GET['id'])){
-		//echo $_GET['id'];
-		if ($stmt = $conn->prepare("SELECT * FROM item WHERE id = ?")) {
-			$stmt->bind_param('i', $_GET['id']);
-			$stmt->execute();
-			$res = $stmt->get_result();
-			$item = $res->fetch_assoc();
-			if ($res -> num_rows == 0) {
-				$error = 'Invalid item';
+if (isset($_GET['id'])){
+	//echo $_GET['id'];
+	if ($stmt = $conn->prepare("SELECT * FROM item WHERE id = ?")) {
+		$stmt->bind_param('i', $_GET['id']);
+		$stmt->execute();
+		$res = $stmt->get_result();
+		$item = $res->fetch_assoc();
+		if ($res -> num_rows == 0) {
+			$error = 'Invalid item';
+		}else{
+			if (isset($_SESSION['username'])){
+				if ($stmt = $conn->prepare('INSERT INTO views (item_id, user_id, view_date) VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE view_date = NOW()')) {
+					$stmt->bind_param('is', $_GET['id'], $_SESSION['username']);
+					if (!$stmt->execute()) {
+						$error = 'Error logging user: '.$stmt->error;
+					}
 				}
-			}
+			}	
 		}
-	else{
-		$_GET['id']="Missing ID";
-		$error = 'Invalid item';
-		}
+	}
+}else{
+	$_GET['id']="Missing ID";
+	$error = 'Invalid item';
+}
 
 $page_title = 'CS2102 Classfieds - View an item';
 include('header.php');
@@ -29,7 +37,7 @@ include('header.php');
         if (isset ($error)){
     ?>
 		<div>
-          <h1>Invalid item:  <?php echo $_GET['id'] ?></h1>
+          <h1>Invalid item:  <?php echo $_GET['id']; ?><br><?= $error ?></h1>
         </div>
 	<?php
 	    }
