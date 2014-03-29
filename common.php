@@ -4,10 +4,7 @@ if(!isset($_SESSION)) {
     session_start();
 }
 
-$conn = mysqli_connect("localhost", "root", "", "classifieds");
-if (mysqli_connect_errno($conn)) {
-    echo "Failed to connect to MySQL: " . mysqli_connect_error();
-}
+include('db.php');
 
 // Class for binding param, can be handy (copied from php.net)
 class BindParam{ 

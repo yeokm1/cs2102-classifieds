@@ -88,7 +88,7 @@ include_once("model/User.php");
 				} if($mode == "users") {
 					$url = "account.php";
 				} if($mode == "categories") {
-					$url = "add_modify_category.php";
+					$url = "admin.php?action=category&mode=add";
 				}
 				
 				if($mode == "classifieds" || $mode == "users" || $mode == "categories") {
@@ -130,7 +130,7 @@ include_once("model/User.php");
                   }
                 } else if($mode == "categories") {
                   for($i = 0; $i < count($arr); $i++) {
-                    echo '<tr class="clickableRow" href="add_modify_category.php?title='.$arr[$i]->name.'" >';
+                    echo '<tr class="clickableRow" href="admin.php?action=category&id='.$arr[$i]->name.'" >';
                     echo '<td>'.($i+1).'</td>';
                     echo '<td>'.$arr[$i]->name.'</td>';
                     echo '</tr>';

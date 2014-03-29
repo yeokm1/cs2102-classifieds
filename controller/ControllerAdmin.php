@@ -32,6 +32,8 @@
 				$this -> handle_users();
 			} else if($_GET['action'] == "categories") {
 				$this -> handle_categories();
+			} else if($_GET['action'] == "category") {
+				$this -> handle_category();
 			} else {
 				$this -> handle_summary();
 			}
@@ -53,6 +55,26 @@
 			$arr = $this->m_adm->getAllCategories();
 			$mode = "categories";
 			include("view/admin.php");
+		}
+		
+		function handle_category() {
+			if(isset($_GET['mode']) && $_GET['mode'] == "new") {
+				$this->m_adm->addCategory($_REQUEST['title']);
+				$this->handle_categories();
+			} else if(isset($_GET['mode']) && $_GET['mode'] == "edit" && isset($_GET['id'])) {
+				$this->m_adm->updateCategory($_GET['id'], $_REQUEST['title']);
+				$this->handle_categories();
+			} else if(isset($_GET['mode']) && $_GET['mode'] == "add") {
+				$cat_title = "";
+				$form_mode = "new";
+				include("view/add_modify_category.php");
+			} else if (isset($_GET['id'])) {
+				$cat_title = $this->m_adm->getCategory($_GET['id']);
+				$form_mode = "edit";
+				include("view/add_modify_category.php");
+			} else {
+				$this->handle_categories();
+			}
 		}
 		
 		function handle_summary() {
