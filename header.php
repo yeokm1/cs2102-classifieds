@@ -12,6 +12,7 @@ if (!isset($extra_head)){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="shortcut icon" href="img/c.png">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,7 +56,7 @@ if (!isset($extra_head)){
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.php">CS2102 Classifieds</a>
+        <a class="navbar-brand" href="index.php"><img src="img/c.png" width="30px"> CS2102 Classifieds</a>
       </div>
       <div class="navbar-collapse collapse">
        <div class="navbar-right">
