@@ -74,7 +74,16 @@ class ModelAdmin {
 	public function addCategory($name) {
 		include('db.php');
 		if($stmt = $conn->prepare("INSERT INTO category (name) VALUES (?)")) {
-			$stmt->bind_param('s', $_POST['title']);
+			$stmt->bind_param('s', $name);
+			$stmt->execute();
+			echo $conn->error;
+		}
+	}
+
+	public function deleteCategory($name) {
+		include('db.php');
+		if($stmt = $conn->prepare("DELETE FROM category WHERE name = ?")) {
+			$stmt->bind_param('s', $name);
 			$stmt->execute();
 			echo $conn->error;
 		}

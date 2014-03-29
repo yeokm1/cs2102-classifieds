@@ -62,8 +62,14 @@
 				$this->m_adm->addCategory($_REQUEST['title']);
 				$this->handle_categories();
 			} else if(isset($_GET['mode']) && $_GET['mode'] == "edit" && isset($_GET['id'])) {
-				$this->m_adm->updateCategory($_GET['id'], $_REQUEST['title']);
-				$this->handle_categories();
+				if(isset($_REQUEST['delete'])) {
+					$this->m_adm->deleteCategory($_GET['id']);
+					$this->handle_categories();
+				} else {
+					$this->m_adm->updateCategory($_GET['id'], $_REQUEST['title']);
+					$this->handle_categories();
+				}
+				
 			} else if(isset($_GET['mode']) && $_GET['mode'] == "add") {
 				$cat_title = "";
 				$form_mode = "new";
@@ -76,7 +82,7 @@
 				$this->handle_categories();
 			}
 		}
-		
+
 		function handle_summary() {
 			$numUser = $this->m_adm->getNumUser();
 			$numItems = $this->m_adm->getNumItems();
