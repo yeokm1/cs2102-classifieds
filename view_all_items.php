@@ -1,35 +1,67 @@
 <?php
 	include('common.php');
-
-	$sql="SELECT i.id, i.user, i.title, i.summary, i.description, i.photo, i.cond, i.price, i.date_listed ";
-	$sql=$sql."FROM item i";
+	
+	$sel = "selected";
+	$sql_where = array();
+	$sql_order="";
+	$order="";
+	$orderby="";
+	$catname="";
+	$error="";	
 	
 	if(isset($_GET['cat']) && $_GET['cat']!=""){
 		$catname=$_GET['cat'];
-		$sql=$sql.", tagged t";
-		$sql=$sql." WHERE t.cat_name='".$catname."'";
-		$sql=$sql." AND t.item_id=i.id";
-		
+		$sql_catname=" t.cat_name='".$catname."'";
+		$sql_catname=$sql_catname." AND t.item_id=i.id";
+		$sql_where[]=$sql_catname;
 	}
-	
-	$sql=$sql." ORDER BY ";
+
+	if(isset($_GET['q']) && $_GET['q']!="") {
+		$query=$_GET['q'];
+		$sql_q="(i.title LIKE '%".$query."%' 
+		OR i.summary LIKE '%".$query."%' 
+		OR i.description LIKE '%".$query."%' 
+		OR i.cond LIKE '%".$query."%' )
+		
+		";
+		$sql_where[]=$sql_q;
+	}
+
 	if(isset($_GET['orderby']) && $_GET['orderby']!=""){
 		$orderby=$_GET['orderby'];
-		$sql=$sql." i.".$orderby." ";
-	}
-	else{
-		$sql=$sql." i.date_listed ";
-		$sql=$sql." DESC ";
+		$sql_orderby="i.".$orderby." ";
+		$order="ASC";
 	}
 	
 	if(isset($_GET['order']) && $_GET['order']!=""){
 		$order=$_GET['order'];
 		if($order=="DESC")
-		$sql=$sql.$order;
+		$sql_order=$order;
 	}
 
 	
-	//echo($sql);
+	$sql="SELECT i.id, i.user, i.title, i.summary, i.description, i.photo, i.cond, i.price, i.date_listed ";
+	$sql=$sql."FROM item i";
+	
+	if(isset($sql_catname)){
+		$sql=$sql.", tagged t";
+	}	
+	
+	if(isset($sql_catname)  || isset($sql_q)  ) {
+		$sql=$sql." WHERE ";
+	}	
+	
+	$sql=$sql.implode (" AND " , $sql_where );
+	
+	if($orderby!=""){
+		$sql=$sql." ORDER BY ".$sql_orderby;
+		$sql=$sql.$sql_order;
+	}
+	else{
+		$sql=$sql." ORDER BY i.date_listed DESC";
+	}
+
+	echo($sql);
 
 	if($stmt = $conn->prepare($sql) ){
 		$stmt->execute();
@@ -60,12 +92,12 @@ include('header.php');
 	<h1>All listed items</h1>
 					
 		<?php
-		if (isset($error) && $error == "NoItemPosted"){
+		if ($error == "NoItemPosted"){
 		?>
-			<p>No items posted yet!</p>
+			<p>Empty Result/No items posted yet!</p>
 			<p>Click <a href="add_modify_item.php">here</a> to start.</p>
 		<?php
-		}else if(isset($error) && $error == "ErrorSQL"){
+		}else if($error == "ErrorSQL"){
 		?>
 			<p>Error URL</p>
 			<p>Click <a href="view_all_items.php">here</a> to view all items!</p>
@@ -73,20 +105,22 @@ include('header.php');
 		}else{
 	 ?>
 		<div class="well">
+		
 			<form name="form" method="GET" action="view_all_items.php" class="form-inline">
 				<div class="form-group">
-					<label>Sort By</label>					
+					<label>Search </label>
+							
+					<!--SEARCH-->							
+					<input name="q" type="text" class="form-control" placeholder="Search" 
+						<?php if(isset($query)){ 
+						  	echo 'value ="'.$query.'"';
+						} ?>>
+						
+						
+					<label>Sort By </label>					
 					<!--ORDER BY-->
 					<select name="orderby" style="width:150px;display:inline-block;" class="form-control">
-					<?php 
-
-						$orderby='';;
-						$sel="selected";
-
-						if(isset($_GET['orderby'])){ 
-							$orderby=$_GET['orderby'];
-						} ?>
-
+						<option value="" <?php if($orderby == "") echo $sel ?>>--</option>	
 						<option value="date_listed" <?php if (($orderby === 'date_listed') OR ($orderby === '')) echo $sel; ?>>Date Listed</option>
 						<option value="title" <?php if ($orderby === 'title') echo $sel; ?>>Title</option>
 						<option value="price" <?php if ($orderby === 'price') echo $sel; ?>>Price</option>
@@ -95,28 +129,15 @@ include('header.php');
 
 					<!--ORDER -->
 					<select name="order" style="width:150px;display:inline-block;" class="form-control">
-					<?php 
-						$order=$_GET['order'];
-						$sel="selected";
-						if(isset($_GET['order'])){ 
-							$order=$_GET['order'];
-							$sel="selected";
-						} ?>
+						<option value="" <?php if($order == "") echo $sel ?>>--</option>	
 						<option value="DESC" <?php if (($order === 'DESC') OR ($order === '')) echo $sel; ?>>Descending</option>
-						<option value="ASC" <?php if ($order === 'ASC') echo $sel; ?>>Ascending</option>						
+						<option value="ASC" <?php if ($order === 'ASC') echo $sel; ?>>Ascending</option>					
 					</select>
 				</div>
 				<div class="form-group">
-					<label>Filter Category</label>	
+					<label> Filter Category </label>	
 					<!--FILTER BY CATEGORY-->
 					<select name="cat" style="width:200px;display:inline-block;"  class="form-control">
-						<?php 
-						$catname="";
-						$sel="selected";
-
-						if(isset($_GET['cat'])){
-							$catname=$_GET['cat'];
-						} ?>
 							<?php
 
 						if ($allCatStmt = $conn->prepare("SELECT * FROM category")) {
