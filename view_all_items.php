@@ -40,7 +40,7 @@
 	}
 
 	
-	$sql="SELECT i.id, i.user, i.title, i.summary, i.description, i.photo, i.cond, i.price, i.date_listed ";
+	$sql="SELECT * ";
 	$sql=$sql."FROM item i";
 	
 	if(isset($sql_catname)){
@@ -61,7 +61,7 @@
 		$sql=$sql." ORDER BY i.date_listed DESC";
 	}
 
-	//echo($sql);
+	echo($sql);
 
 	if($stmt = $conn->prepare($sql) ){
 		$stmt->execute();
