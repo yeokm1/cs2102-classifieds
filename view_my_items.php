@@ -26,7 +26,7 @@ include('header.php');
 	<table class="table table-hover">
 		 <thead>
 			<tr>
-				<th colspan="2"> <div class="container-fluid ">
+				<th colspan="2">
 					<h1>Viewing your listed items</h1>
 				</th>
 			</tr>
@@ -71,12 +71,12 @@ include('header.php');
 			<?php 
 			$itemphoto='img/noimg.jpg';
 			if($item['photo']!= NULL) 
-				$itemphoto=$item['photo']; ?>
+				$itemphoto='content/item/'.$item['photo']; ?>
 		
 			<center>
 			
 			<!--PUT IMAGE HERE-HIDDEN UNLESS NOT NULL-->
-			<a href="view_item.php?id=<?php echo $item['id'] ?>" title="Click to find out more!"><img src="<?php echo $itemphoto ?>" class="img-thumbnail" style="max-width:200px"></a>
+			<a href="view_item.php?id=<?php echo $item['id'] ?>" title="Click to find out more!"><img src="<?php echo $itemphoto ?>" class="img-thumbnail" style="max-width:200px; max-height:200px;"></a>
 			
 			</center>
 			</td>
