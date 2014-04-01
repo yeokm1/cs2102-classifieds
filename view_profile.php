@@ -86,12 +86,12 @@ include('header.php');
 					<?php 
 					$userphoto='img/noimg.jpg';
 					if($user['photo']!= NULL) 
-						$userphoto=$user['photo']; ?>
+						$userphoto='content/profile/'.$user['photo']; ?>
 				
 					<center>
 					
 					<!--PUT IMAGE HERE-HIDDEN UNLESS NOT NULL-->
-					<img src="<?php echo $userphoto ?>" class="img-thumbnail" style="max-width:500px">
+					<img src="<?php echo $userphoto ?>" class="img-thumbnail" style="max-width:300px;max-height:300px;">
 
 					</center>
 				</td>
