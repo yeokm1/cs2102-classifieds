@@ -338,13 +338,13 @@ if(isset($item) &&  isset($item['user']) && ( ( isset($_SESSION['username']) && 
 
 	<div class = form-group>
 
-		<div class="col-md-1">
-			<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" name = 'Edit' value="Edit"/>
+		<div class="col-md-2">
+			<input type = "submit" class="btn btn-primary pull-left" type="button" id="post_btn" name = 'Edit' value="Save Changes"/>
 			<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
 		</div>
 
-		<div class="col-md-1">
-			<input type = "submit" class="btn btn-danger pull-left" type="button" id="post_btn" name = 'Delete' value="Delete"/>
+		<div class="col-md-3">
+			<input type = "submit" class="btn btn-danger pull-left" type="button" id="post_btn" name = 'Delete' value="Delete this Post"/>
 			<input type="hidden" name = "item_id" class="form-control" value="<?php echo $item['id']; ?>">
 		</div>
 
