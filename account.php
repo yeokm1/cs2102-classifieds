@@ -5,7 +5,16 @@
   function handleEdit(){
     global $conn;
     
-    if ($_POST['username'] == $_SESSION['username'] || $_SESSION['role'] == "admin"){
+	if(isset($_POST['delete']) && $_SESSION['role'] == "admin") {
+		if(isset($_POST['username'])) {
+			if ($stmt = $conn->prepare("DELETE FROM user WHERE username = ?")) {
+				$stmt->bind_param('s', $_POST['username']);
+				$stmt->execute();
+			} else {
+				$err = 'An error occurred';
+			}
+		}
+	} else if ($_POST['username'] == $_SESSION['username'] || $_SESSION['role'] == "admin"){
       $stmt = null;
       
       //print_r($_POST);
@@ -201,6 +210,9 @@ EOT;
             }            
           ?>
         </button>
+		<?php if($editMode && $_SESSION['role'] == "admin") { ?>
+		<button class="btn btn-lg btn-danger btn-block" type="submit" name="delete">Delete</button>
+		<?php } ?>
       </form>
 
     </div> <!-- /container -->
