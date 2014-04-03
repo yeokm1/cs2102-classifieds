@@ -7,14 +7,14 @@ include_once("model/Category.php");
 class ModelAdmin {
 	public function getAllItems() {
 		include('db.php');
-		if ($stmt = $conn->prepare("SELECT * FROM item")) {
+		if ($stmt = $conn->prepare("SELECT i.id, i.user, i.title, i.summary, i.price, i.date_listed FROM item i")) {
 			$stmt->execute();
 			$result = $stmt->get_result();
 			
 			$arr = array();
 			while($row = $result->fetch_assoc()) {
 				$it = new Item($row['id'], $row['user'], $row['title'], $row['summary'],
-					$row['description'], $row['cond'], $row['price'], $row['date_listed']);
+					"", "", $row['price'], $row['date_listed']);
 				array_push($arr, $it);
 			}
 			
@@ -26,13 +26,13 @@ class ModelAdmin {
 	
 	public function getAllUsers() {
 		include('db.php');
-		if ($stmt = $conn->prepare("SELECT * FROM user")) {
+		if ($stmt = $conn->prepare("SELECT u.email, u.username, u.gender, u.phone, u.join_date, u.role FROM user u")) {
 			$stmt->execute();
 			$result = $stmt->get_result();
 			
 			$arr = array();
 			while($row = $result->fetch_assoc()) {
-				$ur = new User($row['email'], $row['username'], $row['photo'], $row['gender'],
+				$ur = new User($row['email'], $row['username'], "", $row['gender'],
 					$row['phone'], $row['join_date'], $row['role']);
 				array_push($arr, $ur);
 			}
