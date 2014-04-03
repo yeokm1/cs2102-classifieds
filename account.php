@@ -104,7 +104,10 @@
 
   $editMode = false;
 
-  if(isset($_POST['username'])) {
+   if (isset($_REQUEST['add']) && $_SESSION['role'] == "admin") {
+		//admin wants to add a user
+		//nothing to do here :)
+   }else if(isset($_POST['username'])) {
     if($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
       $stmt->bind_param('s', $_POST['username']);
       $stmt->execute();
