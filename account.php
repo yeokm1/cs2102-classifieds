@@ -5,7 +5,16 @@
   function handleEdit(){
     global $conn;
     
-    if ($_POST['username'] == $_SESSION['username'] || $_SESSION['role'] == "admin"){
+	if(isset($_POST['delete']) && $_SESSION['role'] == "admin") {
+		if(isset($_POST['username'])) {
+			if ($stmt = $conn->prepare("DELETE FROM user WHERE username = ?")) {
+				$stmt->bind_param('s', $_POST['username']);
+				$stmt->execute();
+			} else {
+				$err = 'An error occurred';
+			}
+		}
+	} else if ($_POST['username'] == $_SESSION['username'] || $_SESSION['role'] == "admin"){
       $stmt = null;
       
       //print_r($_POST);
@@ -34,9 +43,10 @@
       
       $bindParam = new BindParam();
       
-      $build_stmt = 'UPDATE user SET email = ?, phone = ? ';
+      $build_stmt = 'UPDATE user SET email = ?, phone = ?, gender = ? ';
       $bindParam->add('s', $_POST['email']);
       $bindParam->add('s', $_POST['contact-number']);
+	  $bindParam->add('s', $_POST['gender']);
       
       if (isset($new_password)){
         $build_stmt .=  ', password = ?';
@@ -88,8 +98,8 @@
         $err = 'Passwords do not match';
       }else{
         
-        if ($stmt = $conn->prepare("INSERT INTO user (email, username, password, phone) VALUES (?, ?, ?, ?)")) {
-          $stmt->bind_param('ssss', $_POST['email'], $_POST['username'], $_POST['password'], $_POST['contact-number']);
+        if ($stmt = $conn->prepare("INSERT INTO user (email, username, password, gender, phone) VALUES (?, ?, ?, ?, ?)")) {
+          $stmt->bind_param('sssss', $_POST['email'], $_POST['username'], $_POST['password'], $_POST['gender'], $_POST['contact-number']);
           if ($stmt->execute()){
             $msg = 'Account created successfully! You may now <a href="signin.php">sign in</a>.';
           }else{
@@ -103,7 +113,10 @@
 
   $editMode = false;
 
-  if(isset($_POST['username'])) {
+   if (isset($_REQUEST['add']) && $_SESSION['role'] == "admin") {
+		//admin wants to add a user
+		//nothing to do here :)
+   }else if(isset($_POST['username'])) {
     if($stmt = $conn->prepare("SELECT * FROM user WHERE username = ?")) {
       $stmt->bind_param('s', $_POST['username']);
       $stmt->execute();
@@ -180,6 +193,7 @@ EOT;
         <label>Password: </label><input type="password" name="password" class="form-control" placeholder="Password" <?= $editMode ? '' : 'required' ?>>
         <label>Retype password: </label><input type="password" name="retype-password" class="form-control" placeholder="Retype Password" <?= $editMode ? '' : 'required' ?>>
         <label>Email: </label><input type="email" name="email" class="form-control" placeholder="Email Address" value="<?= $editMode ? $row['email'] : ''; ?>" required>
+		<label>Gender: </label><input type="text" name="gender" class="form-control" placeholder="Gender" value="<?= $editMode ? $row['gender'] : ''; ?>" required>
         <label>Phone: </label><input type="text" name="contact-number" class="form-control form-last-item" placeholder="Contact Number" value="<?= $editMode ? $row['phone'] : ''; ?>" required>
         <?php if ($editMode && $row['photo'] != '') { ?>
           <img src="<?= 'content/profile/'.$row['photo']; ?>" width="300">
@@ -196,6 +210,9 @@ EOT;
             }            
           ?>
         </button>
+		<?php if($editMode && $_SESSION['role'] == "admin") { ?>
+		<button class="btn btn-lg btn-danger btn-block" type="submit" name="delete">Delete</button>
+		<?php } ?>
       </form>
 
     </div> <!-- /container -->

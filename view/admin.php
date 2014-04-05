@@ -37,7 +37,7 @@ include("header.php");
 				if($mode == "classifieds") {
 					$url = "add_modify_item.php";
 				} if($mode == "users") {
-					$url = "account.php";
+					$url = "account.php?add";
 				} if($mode == "categories") {
 					$url = "admin.php?action=category&mode=add";
 				}

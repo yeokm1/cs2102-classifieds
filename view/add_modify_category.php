@@ -9,7 +9,7 @@
 		<h1>Add/Edit Category</h1>
 
 
-		<form class="form-signin" role="form" action="admin.php?action=category&mode=<? echo $form_mode ?>&id=<? echo $cat_title ?>" method="post">
+		<form class="form-signin" role="form" action="admin.php?action=category&mode=<?php echo $form_mode ?>&id=<?php echo $cat_title ?>" method="post">
 			<div class="form-group">
 			<h2 class="form-signin-heading">Category name:</h2>
 			<input type="text" name = "title" class="form-control" placeholder="Title" required autofocus value="<?php echo (isset($cat_title)? $cat_title : ''); ?>">
