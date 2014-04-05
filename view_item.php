@@ -50,7 +50,7 @@ include('header.php');
 		?>
 		<FORM action="add_modify_item.php">
 			<input type="hidden" name="id" value="<?php echo $item['id'] ?>">
-			<INPUT type=submit style=" vertical-align: middle;" value="Edit your own item" class="btn btn-primary" >
+			<INPUT type=submit style=" vertical-align: middle;" value="Edit" class="btn btn-primary" >
 		</FORM>
 
 		<?php

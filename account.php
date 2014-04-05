@@ -181,11 +181,11 @@ EOT;
         <label>Retype password: </label><input type="password" name="retype-password" class="form-control" placeholder="Retype Password" <?= $editMode ? '' : 'required' ?>>
         <label>Email: </label><input type="email" name="email" class="form-control" placeholder="Email Address" value="<?= $editMode ? $row['email'] : ''; ?>" required>
         <label>Phone: </label><input type="text" name="contact-number" class="form-control form-last-item" placeholder="Contact Number" value="<?= $editMode ? $row['phone'] : ''; ?>" required>
-        <label>Image: </label><?php if ($editMode && $row['photo'] != '') { ?>
+        <?php if ($editMode && $row['photo'] != '') { ?>
           <img src="<?= 'content/profile/'.$row['photo']; ?>" width="300">
         <?php } ?>
         <?php if ($editMode) { ?>
-          <input type="file" name="photo" class="form-control form-last-item" placeholder="Photo">
+          <label>Image: </label><input type="file" name="photo" class="form-control form-last-item" placeholder="Photo">
         <?php } ?>
         <button class="btn btn-lg btn-primary btn-block" type="submit">
           <?php

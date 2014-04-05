@@ -61,7 +61,7 @@
 		$sql=$sql." ORDER BY i.date_listed DESC";
 	}
 
-	echo($sql);
+	//echo($sql);
 
 	if($stmt = $conn->prepare($sql) ){
 		$stmt->execute();
