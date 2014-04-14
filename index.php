@@ -33,7 +33,7 @@ SELECT i.title, i.photo, i.id, COUNT(v.item_id) as count FROM item i, views v WH
 						?>
 						<div class="col-md-2">
 							<a href="view_item.php?id=<?= $hotItem['id']; ?>" title="<?= $hotItem['count']; ?> other user<?= $relItem['count'] > 1 ? 's' : '' ?> viewed this item">
-								<div style="text-align:center;"><img src="<?= $itemphoto; ?>" style="max-width:150px;max-height:200px;"></div>
+								<div style="text-align:center;width:150px;height:200px"><img src="<?= $itemphoto; ?>" style="max-width:150px;"></div>
 								<div style="text-align:center;"><?= $hotItem['title']; ?></div>
 							</a>
 						</div>							
@@ -63,7 +63,7 @@ SELECT i.title, i.photo, i.id, COUNT(v.item_id) as count FROM item i, views v WH
 					?>
 					<div class="col-md-2">
 						<h4><?= $latestItem['title']; ?></h4>
-						<p><img src="<?= $itemphoto; ?>" style="max-width:150px;max-height:200px;"></p>
+						<div style="text-align:center;width:150px;height:200px"><img src="<?= $itemphoto; ?>" style="max-width:150px"></div>
 						<p><?= $latestItem['summary']; ?></p>
 						<p><a class="btn btn-default" href="view_item.php?id=<?= $latestItem['id'] ?>" role="button">View details &raquo;</a></p>
 					</div>							
