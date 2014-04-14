@@ -127,13 +127,20 @@ SELECT * FROM item WHERE id in (
 SELECT v2.item_id FROM views v1, views v2 WHERE v1.item_id = 10 AND v1.user_id = v2.user_id AND v2.item_id <> ? AND v2.user_id <> ? GROUP BY v2.item_id ORDER BY COUNT(v2.item_id) DESC LIMIT 0, 10
 )
 -->
-			<?php if (isset($_SESSION['username'])){ ?>
+			<?php 
+				if (isset($_SESSION['username'])){ 
+					$username = $_SESSION['username'];
+				}else{
+					$username = "";
+				}
+			?>
+			
 			<h3>Users who viewed this item also viewed:</h3>
-			<?php } ?>
+			
 			<?php if ($relatedItemsStmt = $conn->prepare('
 SELECT i.title, i.photo, i.id, COUNT(v2.item_id) as count FROM item i, views v1, views v2 WHERE v1.item_id = ? AND v1.user_id = v2.user_id AND v2.item_id <> ? AND v2.user_id <> ? AND i.id = v2.item_id GROUP BY v2.item_id ORDER BY count DESC LIMIT 0, 6
 			')) {
-					$relatedItemsStmt->bind_param('iis', $item['id'], $item['id'], $_SESSION['username']);
+					$relatedItemsStmt->bind_param('iis', $item['id'], $item['id'], $username);
 					$relatedItemsStmt->execute();
 					$relatedItemsRes = $relatedItemsStmt->get_result();
 					while($relItem = $relatedItemsRes ->fetch_assoc()){
