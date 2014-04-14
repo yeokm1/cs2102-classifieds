@@ -32,7 +32,7 @@ SELECT i.title, i.photo, i.id, COUNT(v.item_id) as count FROM item i, views v WH
 							$itemphoto='content/item/'.$hotItem['photo'];
 						?>
 						<div class="col-md-2">
-							<a href="view_item.php?id=<?= $hotItem['id']; ?>" title="<?= $hotItem['count']; ?> other user<?= $relItem['count'] > 1 ? 's' : '' ?> viewed this item">
+							<a href="view_item.php?id=<?= $hotItem['id']; ?>" title="<?= $hotItem['count']; ?> other user<?= $hotItem['count'] > 1 ? 's' : '' ?> viewed this item">
 								<div style="text-align:center;width:150px;height:200px"><img src="<?= $itemphoto; ?>" style="max-width:150px;"></div>
 								<div style="text-align:center;"><?= $hotItem['title']; ?></div>
 							</a>
