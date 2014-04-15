@@ -98,7 +98,7 @@ include('header.php');
 				<dt>Condition</dt>
 				<dd><?php echo $item['cond'] ?></dd>
 				<dt>Price</dt>
-				<dd><?php echo $item['price'] ?></dd>
+				<dd>$<?php echo number_format ($item['price'], 2) ?></dd>
 				<dt>Categories</dt>
 				<dd>
 				<?php if ($itemCatStmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {

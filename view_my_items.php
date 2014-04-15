@@ -86,7 +86,7 @@ include('header.php');
 				<ul>
 				<li><b>Date Listed:</b> <?php echo $item['date_listed'] ?>
 				<li><b>Summary:</b> <?php echo $item['summary'] ?>
-				<li><b>Price:</b> <?php echo $item['price'] ?>
+				<li><b>Price:</b> $<?php echo number_format ($item['price'], 2) ?>
 				<li><b>Condition:</b> <?php echo $item['cond'] ?>
 				<li><b>Categories:</b> 
 				 <?php if ($itemCatStmt = $conn->prepare("SELECT cat_name FROM tagged WHERE item_id = ?")) {

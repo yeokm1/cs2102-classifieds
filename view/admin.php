@@ -75,7 +75,7 @@ include("header.php");
                     echo '<td>'.$arr[$i]->title.'</td>';
                     echo '<td>'.$arr[$i]->user.'</td>';
                     echo '<td>'.$arr[$i]->date_listed.'</td>';
-                    echo '<td>$'.$arr[$i]->price.'</td>';
+                    echo '<td>$'.number_format ($arr[$i]->price, 2).'</td>';
                     echo '<td>'.$arr[$i]->summary.'</td>';
                     echo '</tr>';
                   }

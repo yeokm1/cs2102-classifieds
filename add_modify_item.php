@@ -329,7 +329,7 @@ if (isset($_POST['title']) && isset($_POST['summary']) && isset($_POST['descript
 
 <div class="form-group">        
 	<label>Price</label>
-	<input type="text" name = "price" class="form-control" placeholder="Price" required value="<?php echo (isset($item)? $item['price'] : '');?>">
+	<input type="text" name = "price" class="form-control" placeholder="Price" required value="<?php echo (isset($item)? number_format ($item['price'], 2) : '');?>">
 </div>
 
 <?php

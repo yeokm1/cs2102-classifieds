@@ -195,8 +195,8 @@ include('header.php');
 						<?php echo $item['summary'] ?>
 					</li>
 					<li>
-						<b>Price:</b>
-						<?php echo $item['price'] ?>
+						<b>Price:</b> $
+						<?php echo number_format ( $item['price'], 2) ?>
 					</li>
 					<li>
 						<b>Condition:</b>
